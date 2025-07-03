@@ -1,634 +1,208 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { DataService } from '../shared/services/data.service';
+import { LocalizationService } from '../shared/services/localization.service';
+import { Product } from '../shared/models/product.model';
+import { BlogPost } from '../shared/models/blog.model';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [CommonModule, RouterModule],
   template: `
-    <div class="stradivarius-home">
-      <!-- Üst Menü -->
-      <header class="header">
-        <button class="menu-btn">&#9776;</button>
-        <div class="logo">
-          <span class="logo-icon">&#119070;</span>
-          <span class="logo-text">MY APP</span>
-        </div>
-        <div class="header-actions">
-          <input class="search" type="text" placeholder="Ne aramak istersin?">
-          <button class="icon-btn">&#128100;</button>
-          <button class="icon-btn">&#9825;</button>
-          <button class="icon-btn">&#128722;</button>
-        </div>
-      </header>
-
-      <!-- Banner/Slider -->
-      <section class="banner">
-        <img class="banner-bg" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Deniz ve Palmiye" />
-        <img class="banner-car" src="https://pngimg.com/d/bmw_PNG99585.png" alt="Kırmızı Araba" />
-        <img class="banner-model1" src="https://i.imgur.com/0y0y0y0.png" alt="Model 1" />
-        <img class="banner-model2" src="https://i.imgur.com/1x1x1x1.png" alt="Model 2" />
-        <div class="banner-text">
-          <div class="yeni">YENİ</div>
-          <a href="#" class="see-all">TÜMÜNÜ GÖR</a>
-        </div>
-        <button class="slider-arrow left">&#10094;</button>
-        <button class="slider-arrow right">&#10095;</button>
-      </section>
-
-      <!-- Kategori Grid Bölümü -->
-      <section class="category-section">
-        <h2 class="category-title">SEÇİLİ ÜRÜNLERDE -%40'A VARAN İNDİRİM</h2>
-        <div class="category-grid">
-          <div class="category-card">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="T-shirt">
-            <span class="category-label">T-SHIRT</span>
-          </div>
-          <div class="category-card">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Pantolon">
-            <span class="category-label">PANTOLON</span>
-          </div>
-          <div class="category-card">
-            <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Gömlek">
-            <span class="category-label">GÖMLEK</span>
-          </div>
-          <div class="category-card">
-            <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7b29?auto=format&fit=crop&w=400&q=80" alt="Elbise">
-            <span class="category-label">ELBİSE</span>
-          </div>
-          <div class="category-card">
-            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80" alt="At">
-            <span class="category-label">AT</span>
-          </div>
-          <div class="category-card">
-            <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Ayakkabı">
-            <span class="category-label">AYAKKABI</span>
+    <div class="home">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1>Welcome to Our E-Commerce Store</h1>
+            <p>Discover amazing products at unbeatable prices</p>
+            <a routerLink="/products" class="btn btn-primary">Shop Now</a>
           </div>
         </div>
       </section>
 
-      <!-- Önerilen Ürünler Bölümü -->
-      <section class="recommend-section">
-        <h2 class="recommend-title">SENİN İÇİN ÖNERİLENLER</h2>
-        <div class="recommend-row-wrapper">
-          <button class="recommend-arrow left" (click)="scrollRecommend(-1)">&#10094;</button>
-          <div class="recommend-row" #recommendRow>
-            <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Bantlı düz terlik">
-              <div class="recommend-info">
-                <div class="color-dots">
-                  <span class="dot" style="background:#f5f5f5"></span>
-                  <span class="dot" style="background:#c2bdb6"></span>
-                </div>
-                <div class="recommend-name">Bantlı düz terlik</div>
-                <div class="recommend-prices">
-                  <span class="price">890,00 TL</span>
-                  <span class="discount">-35%</span>
-                  <span class="old-price">1.390,00 TL</span>
-                </div>
-              </div>
-            </div>
-            <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Tokalı düz terlik">
-              <div class="recommend-info">
-                <div class="recommend-name">Tokalı düz terlik</div>
-                <div class="recommend-prices">
-                  <span class="price">1.090,00 TL</span>
-                  <span class="discount">-15%</span>
-                  <span class="old-price">1.290,00 TL</span>
+      <!-- Featured Products -->
+      <section class="featured-products">
+        <div class="container">
+          <h2>Featured {{ localizationService.t('nav.products') }}</h2>
+          <div class="grid grid-4">
+            <div class="product-card" *ngFor="let product of featuredProducts">
+              <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+              <div class="product-info">
+                <h3 class="product-title">{{ product.name }}</h3>
+                <p class="product-price">\${{ product.price }}</p>
+                <div class="product-actions">
+                  <button class="btn btn-primary" (click)="addToCart(product.id)">
+                    {{ localizationService.t('product.addToCart') }}
+                  </button>
+                  <a [routerLink]="['/products', product.id]" class="btn btn-secondary">
+                    {{ localizationService.t('product.viewDetails') }}
+                  </a>
                 </div>
               </div>
             </div>
-            <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Bantlı düz terlik">
-              <div class="recommend-info">
-                <div class="color-dots">
-                  <span class="dot" style="background:#f5f5f5"></span>
-                  <span class="dot" style="background:#4b2e1e"></span>
-                </div>
-                <div class="recommend-name">Bantlı düz terlik</div>
-                <div class="recommend-prices">
-                  <span class="price">890,00 TL</span>
-                  <span class="discount">-35%</span>
-                  <span class="old-price">1.390,00 TL</span>
-                </div>
-              </div>
-            </div>
-            <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7b29?auto=format&fit=crop&w=400&q=80" alt="Straight fit jean">
-              <div class="recommend-info">
-                <div class="color-dots">
-                  <span class="dot" style="background:#bfc8d1"></span>
-                  <span class="dot" style="background:#e0e4e8"></span>
-                </div>
-                <div class="recommend-name">Straight fit jean</div>
-                <div class="recommend-prices">
-                  <span class="price">920,00 TL</span>
-                  <span class="discount">-38%</span>
-                  <span class="old-price">1.490,00 TL</span>
-                </div>
-              </div>
-            </div>
-            <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Dökümlü halter top">
-              <div class="recommend-info">
-                <div class="recommend-name">Dökümlü halter top</div>
-                <div class="recommend-prices">
-                  <span class="price">590,00 TL</span>
-                  <span class="discount">-45%</span>
-                  <span class="old-price">1.090,00 TL</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <button class="recommend-arrow right" (click)="scrollRecommend(1)">&#10095;</button>
-        </div>
-      </section>
-
-      <!-- Tanıtım/Reklam Bölümü -->
-      <section class="promo-section">
-        <div class="promo-content">
-          <div class="promo-left">
-            <div class="promo-logo">MY APP</div>
-            <div class="promo-title">HER HAFTA YENİ TRENDLER VE FIRSATLAR!</div>
-            <div class="promo-desc">En yeni ürünler, özel indirimler ve ilham verici koleksiyonlar burada! Sitemizi takip edin, modayı yakalayın.</div>
-            <a href="#" class="promo-btn">Hemen Keşfet</a>
-          </div>
-          <div class="promo-right">
-            <img class="promo-phone" src="https://i.imgur.com/8zQb6tL.png" alt="Telefon 1" />
-            <img class="promo-phone" src="https://i.imgur.com/8zQb6tL.png" alt="Telefon 2" />
-            <img class="promo-phone" src="https://i.imgur.com/8zQb6tL.png" alt="Telefon 3" />
           </div>
         </div>
       </section>
 
-      <!-- Alt Bilgi Barı -->
-      <footer class="info-bar">
-        <span>1999 TL ve üzeri siparişlerde ücretsiz kargo **</span>
-        <span>Mağazaya ücretsiz kargo</span>
-        <span>1999 TL ve üzeri siparişlerde ücretsiz kargo **</span>
-      </footer>
+      <!-- Latest Blog Posts -->
+      <section class="latest-blog">
+        <div class="container">
+          <h2>Latest {{ localizationService.t('nav.blog') }} Posts</h2>
+          <div class="grid grid-3">
+            <div class="blog-card card" *ngFor="let post of latestPosts">
+              <img [src]="post.featuredImage" [alt]="post.title" class="blog-image">
+              <div class="blog-content">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.excerpt }}</p>
+                <a [routerLink]="['/blog', post.slug]" class="btn btn-secondary">Read More</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features">
+        <div class="container">
+          <h2>Why Choose Us</h2>
+          <div class="grid grid-3">
+            <div class="feature card">
+              <div class="feature-icon">🚚</div>
+              <h3>Free Shipping</h3>
+              <p>Free shipping on orders over $50</p>
+            </div>
+            <div class="feature card">
+              <div class="feature-icon">🔒</div>
+              <h3>Secure Payment</h3>
+              <p>Your payment information is always secure</p>
+            </div>
+            <div class="feature card">
+              <div class="feature-icon">💬</div>
+              <h3>24/7 Support</h3>
+              <p>Get help whenever you need it</p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   `,
   styles: [`
-    .stradivarius-home {
-      font-family: 'Inter', Arial, sans-serif;
-      background: #fff;
-      min-height: 100vh;
-      position: relative;
+    .hero {
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      color: white;
+      padding: 4rem 0;
+      text-align: center;
     }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 2rem 1.2rem 1rem;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      position: relative;
-      z-index: 10;
+    
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
-    .menu-btn {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-right: 1rem;
+    
+    .hero-content p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 2.2rem;
-      font-weight: 600;
-      letter-spacing: 2px;
+    
+    .featured-products,
+    .latest-blog,
+    .features {
+      padding: 4rem 0;
     }
-    .logo-icon {
-      font-size: 2.2rem;
-      margin-right: 0.5rem;
-    }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .search {
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      border: 1px solid #ddd;
-      font-size: 1rem;
-      min-width: 200px;
-      margin-right: 0.5rem;
-    }
-    .icon-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      margin-left: 0.2rem;
-    }
-    .banner {
-      position: relative;
-      width: 100%;
-      height: 480px;
-      background: #e0f2fe;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .banner-bg {
-      position: absolute;
-      left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;
-      filter: brightness(0.95);
-    }
-    .banner-car {
-      position: absolute;
-      left: 10%;
-      bottom: 0;
-      width: 60vw;
-      max-width: 700px;
-      z-index: 2;
-      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.18));
-    }
-    .banner-model1 {
-      position: absolute;
-      left: 38%;
-      bottom: 0;
-      width: 170px;
-      z-index: 3;
-    }
-    .banner-model2 {
-      position: absolute;
-      right: 18%;
-      bottom: 0;
-      width: 180px;
-      z-index: 3;
-    }
-    .banner-text {
-      position: absolute;
-      left: 18%;
-      bottom: 90px;
-      z-index: 4;
-      color: #fff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.18);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-    .yeni {
+    
+    .featured-products h2,
+    .latest-blog h2,
+    .features h2 {
+      text-align: center;
+      margin-bottom: 3rem;
       font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      letter-spacing: 1px;
+      color: #1f2937;
     }
-    .see-all {
-      font-size: 1.1rem;
-      color: #fff;
-      background: rgba(0,0,0,0.18);
-      padding: 0.3rem 1.2rem;
-      border-radius: 2rem;
-      text-decoration: none;
-      font-weight: 500;
-      margin-top: 0.2rem;
-      transition: background 0.2s;
-    }
-    .see-all:hover {
-      background: #fff;
-      color: #1d4ed8;
-    }
-    .slider-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.8);
-      border: none;
-      font-size: 2.2rem;
-      border-radius: 50%;
-      width: 48px;
-      height: 48px;
-      cursor: pointer;
-      z-index: 5;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: background 0.2s;
-    }
-    .slider-arrow.left { left: 2vw; }
-    .slider-arrow.right { right: 2vw; }
-    .slider-arrow:hover { background: #1d4ed8; color: #fff; }
-    .info-bar {
-      position: fixed;
-      left: 0; right: 0; bottom: 0;
-      background: #e11d48;
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 500;
+    
+    .product-actions {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 2rem;
-      padding: 0.7rem 0;
-      z-index: 20;
-      box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
-    }
-    .category-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem 1rem 2rem 1rem;
-      text-align: center;
-    }
-    .category-title {
-      font-size: 2.7rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 2.5rem;
-      margin-top: 1.5rem;
-    }
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-    }
-    .category-card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 0.18rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-      background: #fff;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-    }
-    .category-card:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.13);
-    }
-    .category-card img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      display: block;
-      filter: saturate(1.1);
-    }
-    .category-label {
-      position: absolute;
-      left: 0; right: 0; bottom: 18px;
-      color: #fff;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      text-align: center;
-      pointer-events: none;
-    }
-    .recommend-section {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2.5rem 1rem 2rem 1rem;
-      text-align: center;
-    }
-    .recommend-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 2.5rem;
-      margin-top: 1.5rem;
-    }
-    .recommend-row-wrapper {
-      position: relative;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .recommend-row {
-      display: flex;
-      flex-direction: row;
-      gap: 0.7rem;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding-bottom: 0.5rem;
-      width: 100%;
-      scrollbar-width: thin;
-      scrollbar-color: #e11d48 #eee;
-    }
-    .recommend-row::-webkit-scrollbar {
-      height: 7px;
-    }
-    .recommend-row::-webkit-scrollbar-thumb {
-      background: #e11d48;
-      border-radius: 4px;
-    }
-    .recommend-row::-webkit-scrollbar-track {
-      background: #eee;
-    }
-    .recommend-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.95);
-      border: none;
-      font-size: 2.2rem;
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      cursor: pointer;
-      z-index: 2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: background 0.2s;
-      color: #e11d48;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.85;
-    }
-    .recommend-arrow.left { left: -18px; }
-    .recommend-arrow.right { right: -18px; }
-    .recommend-arrow:hover { background: #e11d48; color: #fff; }
-    .recommend-card {
-      background: #fff;
-      border-radius: 0.18rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-      overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      width: 100%;
-      max-width: 250px;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      cursor: pointer;
-      min-width: 180px;
-      margin: 0;
-    }
-    .recommend-card:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.13);
-    }
-    .recommend-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      display: block;
-    }
-    .recommend-info {
-      padding: 1.2rem 1rem 1.1rem 1rem;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
       gap: 0.5rem;
+      margin-top: 1rem;
     }
-    .recommend-name {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-    .recommend-prices {
-      display: flex;
-      align-items: baseline;
-      gap: 0.7rem;
-      font-size: 1.1rem;
-      margin-top: 0.2rem;
-    }
-    .price {
-      color: #e11d48;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
-    .discount {
-      color: #e11d48;
-      font-weight: 600;
-      font-size: 1rem;
-    }
-    .old-price {
-      color: #aaa;
-      text-decoration: line-through;
-      font-size: 1rem;
-    }
-    .color-dots {
-      display: flex;
-      gap: 0.3rem;
-      margin-bottom: 0.3rem;
-    }
-    .dot {
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      border: 1.5px solid #eee;
-      display: inline-block;
-    }
-    @media (max-width: 900px) {
-      .banner-car { left: 0; width: 90vw; }
-      .banner-model1 { left: 20%; width: 120px; }
-      .banner-model2 { right: 5%; width: 120px; }
-      .banner-text { left: 8%; bottom: 60px; }
-      .category-grid { grid-template-columns: 1fr 1fr; }
-      .recommend-title { font-size: 1.5rem; }
-      .recommend-card img { height: 100px; }
-    }
-    @media (max-width: 600px) {
-      .header { flex-direction: column; align-items: flex-start; padding: 1rem; }
-      .logo { font-size: 1.3rem; }
-      .banner { height: 260px; }
-      .banner-car { width: 100vw; }
-      .banner-model1, .banner-model2 { width: 70px; }
-      .banner-text { font-size: 1.1rem; left: 4%; bottom: 30px; }
-      .info-bar { font-size: 0.9rem; gap: 0.7rem; padding: 0.5rem 0; }
-      .category-title { font-size: 1.3rem; }
-      .category-grid { grid-template-columns: 1fr; gap: 1rem; }
-      .category-card img { height: 160px; }
-      .category-label { font-size: 1.1rem; }
-      .recommend-title { font-size: 1.1rem; }
-      .recommend-row { gap: 0.3rem; }
-      .recommend-card img { height: 60px; }
-      .recommend-info { padding: 0.7rem 0.5rem 0.7rem 0.5rem; }
-      .promo-content { flex-direction: column; align-items: center; text-align: center; }
-      .promo-left { align-items: center; }
-      .promo-right { flex-direction: row; justify-content: center; margin-top: 1.5rem; }
-      .promo-phone { width: 80px; height: 140px; margin: 0 0.3rem; }
-    }
-    .promo-section {
-      width: 100%;
-      background: linear-gradient(90deg, #e11d48 0%, #f43f5e 100%);
-      padding: 3.5rem 0 3.5rem 0;
-      margin: 0 auto 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .promo-content {
-      max-width: 1400px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2.5rem;
-      color: #fff;
-    }
-    .promo-left {
+    
+    .product-actions .btn {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.2rem;
-      min-width: 260px;
+      font-size: 0.875rem;
+      padding: 0.5rem;
     }
-    .promo-logo {
-      font-size: 2.1rem;
-      font-weight: 700;
-      letter-spacing: 2px;
+    
+    .blog-card {
+      overflow: hidden;
+    }
+    
+    .blog-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    
+    .blog-content {
+      padding: 1rem;
+    }
+    
+    .blog-content h3 {
       margin-bottom: 0.5rem;
+      font-size: 1.25rem;
     }
-    .promo-title {
-      font-size: 2.3rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-      letter-spacing: 1px;
+    
+    .blog-content p {
+      color: #6b7280;
+      margin-bottom: 1rem;
     }
-    .promo-desc {
-      font-size: 1.2rem;
-      opacity: 0.93;
-      margin-bottom: 1.2rem;
-      max-width: 420px;
+    
+    .feature {
+      text-align: center;
+      padding: 2rem;
     }
-    .promo-btn {
-      display: inline-block;
-      background: #fff;
-      color: #e11d48;
-      font-weight: 700;
-      font-size: 1.1rem;
-      padding: 0.7rem 2.2rem;
-      border-radius: 0.18rem;
-      text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-      transition: background 0.2s, color 0.2s;
-      margin-top: 0.5rem;
+    
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
-    .promo-btn:hover {
-      background: #e11d48;
-      color: #fff;
+    
+    .feature h3 {
+      margin-bottom: 1rem;
+      color: #1f2937;
     }
-    .promo-right {
-      flex: 1;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: flex-end;
-      gap: 1.2rem;
-      min-width: 260px;
-    }
-    .promo-phone {
-      width: 120px;
-      height: 220px;
-      object-fit: contain;
-      border-radius: 0.18rem;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-      background: #fff;
-      margin: 0 0.2rem;
+    
+    .feature p {
+      color: #6b7280;
     }
   `]
 })
-export class HomeComponent {
-  @ViewChild('recommendRow', { static: false }) recommendRow!: ElementRef;
+export class HomeComponent implements OnInit {
+  featuredProducts: Product[] = [];
+  latestPosts: BlogPost[] = [];
 
-  scrollRecommend(direction: number) {
-    const row = this.recommendRow?.nativeElement;
-    if (row) {
-      const scrollAmount = row.offsetWidth * 0.7;
-      row.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
+  constructor(
+    private dataService: DataService,
+    public localizationService: LocalizationService
+  ) {}
+
+  ngOnInit() {
+    this.dataService.getProducts().subscribe(products => {
+      this.featuredProducts = products.slice(0, 4);
+    });
+
+    this.dataService.getBlogPosts().subscribe(posts => {
+      this.latestPosts = posts.slice(0, 3);
+    });
+  }
+
+  addToCart(productId: string) {
+    this.dataService.addToCart(productId).subscribe(success => {
+      if (success) {
+        alert('Product added to cart!');
+      }
+    });
   }
 }
