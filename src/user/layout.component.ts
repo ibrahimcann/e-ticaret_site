@@ -12,40 +12,23 @@ import { Cart } from '../shared/models/order.model';
   imports: [CommonModule, RouterModule, LanguageSelectorComponent],
   template: `
     <div class="user-layout">
-      <header class="user-header">
-        <div class="container">
-          <nav class="user-nav">
-            <div class="logo">
-              <h2>🛍️ E-Commerce</h2>
-            </div>
-            <div class="user-nav-links">
-              <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="user-nav-link">
-                {{ localizationService.t('nav.home') }}
-              </a>
-              <a routerLink="/products" routerLinkActive="active" class="user-nav-link">
-                {{ localizationService.t('nav.products') }}
-              </a>
-              <a routerLink="/blog" routerLinkActive="active" class="user-nav-link">
-                {{ localizationService.t('nav.blog') }}
-              </a>
-              <a routerLink="/contact" routerLinkActive="active" class="user-nav-link">
-                {{ localizationService.t('nav.contact') }}
-              </a>
-            </div>
-            <div class="user-actions">
-              <app-language-selector></app-language-selector>
-              <a routerLink="/cart" class="cart-link">
-                🛒 {{ localizationService.t('nav.cart') }}
-                <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
-              </a>
-              <a routerLink="/profile" class="profile-link" title="Profilim" style="font-size: 1.5rem; display: flex; align-items: center;">
-                <span style="font-size: 1.7rem; margin-right: 0.3rem;">👤</span>
-              </a>
-              <a routerLink="/admin" class="user-nav-link">Admin</a>
-            </div>
-          </nav>
-        </div>
-      </header>
+      <div class="logo-nav-row">
+        <span class="logo"><h2>🛍️ MY APP</h2></span>
+        <nav class="main-nav">
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="main-nav-link">Anasayfa</a>
+          <a routerLink="/products" routerLinkActive="active" class="main-nav-link">Ürünler</a>
+          <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">🛒 Sepet <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span></a>
+          <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">👤 Profil</a>
+        </nav>
+      </div>
+      <div class="offcanvas-menu" [class.open]="menuOpen">
+        <nav class="offcanvas-nav">
+          <a routerLink="/" routerLinkActive="active" class="offcanvas-link">Anasayfa</a>
+          <a routerLink="/products" routerLinkActive="active" class="offcanvas-link">Ürünler</a>
+          <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepet</a>
+          <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">👤 Profil</a>
+        </nav>
+      </div>
       <main>
         <router-outlet></router-outlet>
       </main>
@@ -85,53 +68,43 @@ import { Cart } from '../shared/models/order.model';
       flex-direction: column;
     }
     
+    .single-header {
+      background: #fff;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+      padding: 0.7rem 0;
+    }
+    
+    .single-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    
+    .header-search-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    
+    .header-search {
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      min-width: 200px;
+      margin-right: 0.5rem;
+      background: #fafbfc;
+      transition: border-color 0.2s;
+    }
+    
+    .header-search:focus {
+      border-color: #2563eb;
+      outline: none;
+    }
+    
     .logo h2 {
       margin: 0;
-      color: #2563eb;
-    }
-    
-    .user-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    
-    .cart-link {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: #374151;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-    
-    .cart-link:hover {
-      color: #2563eb;
-    }
-    
-    .cart-count {
-      background-color: #dc2626;
-      color: white;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    
-    .profile-link {
-      color: #374151;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-    
-    .profile-link:hover {
       color: #2563eb;
     }
     
@@ -200,10 +173,49 @@ import { Cart } from '../shared/models/order.model';
         justify-content: center;
       }
     }
+    
+    .logo-nav-row {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      justify-content: flex-start;
+      padding: 1.2rem 2.5vw 1.2rem 2.5vw;
+      background: #fff;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08);
+      margin-bottom: 0.5rem;
+      position: relative;
+      z-index: 10;
+    }
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+    .main-nav-link {
+      color: #222;
+      font-size: 1.15rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .main-nav-link.active, .main-nav-link:hover {
+      color: #e11d48;
+      text-decoration: underline;
+    }
+    @media (max-width: 900px) {
+      .logo-nav-row { flex-direction: column; gap: 1.2rem; padding: 1rem 1vw; }
+      .main-nav { gap: 1rem; }
+    }
   `]
 })
 export class UserLayoutComponent implements OnInit {
   cartItemCount = 0;
+  menuOpen = false;
+  openMenu() { this.menuOpen = true; }
+  closeMenu() { this.menuOpen = false; }
 
   constructor(
     public localizationService: LocalizationService,
