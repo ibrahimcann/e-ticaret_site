@@ -33,6 +33,10 @@ export const routes: Routes = [
       {
         path: 'contact',
         loadComponent: () => import('./user/contact.component').then(m => m.ContactComponent)
+      },
+      {
+        path: 'profile',
+        loadComponent: () => import('./user/profile.component').then(m => m.ProfileComponent)
       }
     ]
   },

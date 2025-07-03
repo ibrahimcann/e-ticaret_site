@@ -38,6 +38,9 @@ import { Cart } from '../shared/models/order.model';
                 🛒 {{ localizationService.t('nav.cart') }}
                 <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
               </a>
+              <a routerLink="/profile" class="profile-link" title="Profilim" style="font-size: 1.5rem; display: flex; align-items: center;">
+                <span style="font-size: 1.7rem; margin-right: 0.3rem;">👤</span>
+              </a>
               <a routerLink="/admin" class="user-nav-link">Admin</a>
             </div>
           </nav>
@@ -119,6 +122,17 @@ import { Cart } from '../shared/models/order.model';
       justify-content: center;
       font-size: 0.75rem;
       font-weight: 600;
+    }
+    
+    .profile-link {
+      color: #374151;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+    
+    .profile-link:hover {
+      color: #2563eb;
     }
     
     main {
