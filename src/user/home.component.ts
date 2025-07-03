@@ -5,21 +5,6 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
   standalone: true,
   template: `
     <div class="stradivarius-home">
-      <!-- Üst Menü -->
-      <header class="header">
-        <button class="menu-btn">&#9776;</button>
-        <div class="logo">
-          <span class="logo-icon">&#119070;</span>
-          <span class="logo-text">MY APP</span>
-        </div>
-        <div class="header-actions">
-          <input class="search" type="text" placeholder="Ne aramak istersin?">
-          <button class="icon-btn">&#128100;</button>
-          <button class="icon-btn">&#9825;</button>
-          <button class="icon-btn">&#128722;</button>
-        </div>
-      </header>
-
       <!-- Banner/Slider -->
       <section class="banner">
         <img class="banner-bg" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Deniz ve Palmiye" />
@@ -160,6 +145,22 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
         </div>
       </section>
 
+      <!-- Bülten/Abonelik Bölümü -->
+      <section class="newsletter-section">
+        <div class="newsletter-content">
+          <div class="newsletter-left">
+            <div class="newsletter-title">EN YENİ TRENDLERİ VE ÖZEL FIRSATLARI KAÇIRMA</div>
+            <div class="newsletter-desc">Şimdi abone ol, modaya dair son haberler ve öneriler e-posta adresine gelsin.</div>
+          </div>
+          <form class="newsletter-right" (submit)="$event.preventDefault()">
+            <label for="newsletter-email" class="newsletter-label">Email</label>
+            <input id="newsletter-email" type="email" class="newsletter-input" placeholder="E-posta adresiniz" required>
+            <button type="submit" class="newsletter-btn">ŞİMDİ ABONE OL</button>
+            <a href="#" class="newsletter-cancel">Aboneliği iptal etmek istiyorum</a>
+          </form>
+        </div>
+      </section>
+
       <!-- Alt Bilgi Barı -->
       <footer class="info-bar">
         <span>1999 TL ve üzeri siparişlerde ücretsiz kargo **</span>
@@ -174,54 +175,6 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
       background: #fff;
       min-height: 100vh;
       position: relative;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1.2rem 2rem 1.2rem 1rem;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      position: relative;
-      z-index: 10;
-    }
-    .menu-btn {
-      font-size: 2rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-right: 1rem;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 2.2rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-    }
-    .logo-icon {
-      font-size: 2.2rem;
-      margin-right: 0.5rem;
-    }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .search {
-      padding: 0.5rem 1rem;
-      border-radius: 2rem;
-      border: 1px solid #ddd;
-      font-size: 1rem;
-      min-width: 200px;
-      margin-right: 0.5rem;
-    }
-    .icon-btn {
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      margin-left: 0.2rem;
     }
     .banner {
       position: relative;
@@ -520,8 +473,6 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
       .recommend-card img { height: 100px; }
     }
     @media (max-width: 600px) {
-      .header { flex-direction: column; align-items: flex-start; padding: 1rem; }
-      .logo { font-size: 1.3rem; }
       .banner { height: 260px; }
       .banner-car { width: 100vw; }
       .banner-model1, .banner-model2 { width: 70px; }
@@ -618,6 +569,105 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
       box-shadow: 0 4px 24px rgba(0,0,0,0.18);
       background: #fff;
       margin: 0 0.2rem;
+    }
+    .newsletter-section {
+      width: 100%;
+      background: #111;
+      color: #fff;
+      padding: 3.5rem 0 2.5rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .newsletter-content {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 2.5rem;
+    }
+    .newsletter-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+      min-width: 260px;
+    }
+    .newsletter-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 0.7rem;
+    }
+    .newsletter-desc {
+      font-size: 1.2rem;
+      opacity: 0.93;
+      margin-bottom: 1.2rem;
+      max-width: 420px;
+    }
+    .newsletter-right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1.1rem;
+      min-width: 260px;
+    }
+    .newsletter-label {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+      align-self: flex-start;
+    }
+    .newsletter-input {
+      width: 100%;
+      max-width: 340px;
+      padding: 0.7rem 1.2rem;
+      border: none;
+      border-bottom: 2px solid #fff;
+      background: transparent;
+      color: #fff;
+      font-size: 1.1rem;
+      margin-bottom: 0.7rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .newsletter-input:focus {
+      border-bottom: 2px solid #e11d48;
+    }
+    .newsletter-btn {
+      width: 100%;
+      max-width: 340px;
+      padding: 0.7rem 0;
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 0.18rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .newsletter-btn:hover {
+      background: #fff;
+      color: #111;
+      border-color: #fff;
+    }
+    .newsletter-cancel {
+      color: #fff;
+      opacity: 0.7;
+      font-size: 0.98rem;
+      margin-top: 0.5rem;
+      text-decoration: underline;
+      align-self: flex-end;
+    }
+    @media (max-width: 900px) {
+      .newsletter-content { flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
+      .newsletter-left, .newsletter-right { align-items: center; min-width: 0; }
+      .newsletter-btn, .newsletter-input { max-width: 100%; }
+      .newsletter-cancel { align-self: center; }
     }
   `]
 })
