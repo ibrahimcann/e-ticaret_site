@@ -27,7 +27,7 @@ import { Cart } from '../shared/models/order.model';
         <nav class="offcanvas-nav">
           <a routerLink="/" routerLinkActive="active" class="offcanvas-link">Anasayfa</a>
           <a routerLink="/products" routerLinkActive="active" class="offcanvas-link">Ürünler</a>
-          <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepet</a>
+          <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepetim</a>
           <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">{{ localizationService.t('nav.login') }}</a>
           <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">{{ localizationService.t('nav.register') }}</a>
           <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">👤 Profil</a>
