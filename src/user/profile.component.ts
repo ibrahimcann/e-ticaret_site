@@ -217,62 +217,76 @@ import { FormsModule } from '@angular/forms';
     }
     .profile-empty-orders {
       text-align: center;
-      margin-top: 3rem;
+      padding: 3rem 2rem;
+      background: #f9f9f9;
+      border-radius: 1rem;
     }
     .profile-empty-orders h3 {
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       letter-spacing: 1px;
-      text-transform: uppercase;
+    }
+    .profile-empty-orders p {
+      color: #555;
+      margin-bottom: 1.5rem;
     }
     .profile-find-order-btn {
       background: #111;
       color: #fff;
       border: none;
-      border-radius: 2rem;
-      padding: 1.2rem 4rem;
-      font-size: 1.25rem;
+      padding: 0.8rem 2.5rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 2rem;
-      transition: background 0.2s;
-      box-shadow: none;
+      border-radius: 2rem;
+      transition: background 0.18s;
     }
     .profile-find-order-btn:hover {
-      background: #2563eb;
+      background: #333;
+    }
+    .profile-info-list {
+      font-size: 1.1rem;
+      line-height: 2;
     }
     .profile-info-list p {
-      font-size: 1.15rem;
-      margin-bottom: 1.1rem;
+      margin-bottom: 0.8rem;
     }
-    @media (max-width: 900px) {
+    .profile-info-list strong {
+      display: inline-block;
+      width: 120px;
+      font-weight: 600;
+    }
+    @media (max-width: 768px) {
       .profile-main-layout {
         flex-direction: column;
-        max-width: 98vw;
       }
       .profile-sidebar {
         width: 100%;
-        flex-direction: row;
-        justify-content: flex-start;
         border-right: none;
         border-bottom: 1px solid #eee;
-        padding: 1.2rem 0.5rem;
+        padding: 2rem 1rem;
       }
       .profile-content-area {
-        padding: 2rem 1rem;
+        padding: 2rem 1.5rem;
+      }
+      .profile-section-title {
+        font-size: 1.8rem;
+      }
+      .profile-orders-tabs {
+        flex-wrap: wrap;
       }
     }
   `]
 })
 export class ProfileComponent {
   user = {
-    firstName: 'hamiyet',
+    firstName: 'Ayşe',
     lastName: 'Yılmaz',
-    email: 'hamiyet@example.com',
-    phone: '+90 555 123 4567',
-    // avatar: ...
+    email: 'ayse.yilmaz@example.com',
+    phone: '+90 555 123 4567'
   };
+  
   selectedMenu: string = 'orders';
   orderTab: string = 'online';
   orders: any[] = [];
