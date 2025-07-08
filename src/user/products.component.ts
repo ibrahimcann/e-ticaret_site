@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../shared/services/data.service';
 import { LocalizationService } from '../shared/services/localization.service';
@@ -75,23 +75,25 @@ import { Product, Category, Brand } from '../shared/models/product.model';
             
             <div class="products-grid grid grid-3">
               <div class="product-card" *ngFor="let product of filteredProducts">
-                <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
-                <div class="product-info">
-                  <h3 class="product-title">{{ product.name }}</h3>
-                  <p class="product-description">{{ product.description }}</p>
-                  <p class="product-price">\${{ product.price }}</p>
-                  <div class="stock-status" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
-                    {{ product.stock > 0 ? localizationService.t('product.inStock') : localizationService.t('product.outOfStock') }}
-                  </div>
-                  <div class="product-actions">
-                    <button class="btn btn-primary" 
-                            [disabled]="product.stock === 0"
-                            (click)="addToCart(product.id)">
-                      {{ localizationService.t('product.addToCart') }}
-                    </button>
-                    <a [routerLink]="['/products', product.id]" class="btn btn-secondary">
-                      {{ localizationService.t('product.viewDetails') }}
-                    </a>
+                <div class="product-card-inner" (click)="viewProductDetails(product.id)">
+                  <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+                  <div class="product-info">
+                    <h3 class="product-title">{{ product.name }}</h3>
+                    <p class="product-description">{{ product.description }}</p>
+                    <p class="product-price">\${{ product.price }}</p>
+                    <div class="stock-status" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
+                      {{ product.stock > 0 ? localizationService.t('product.inStock') : localizationService.t('product.outOfStock') }}
+                    </div>
+                    <div class="product-actions">
+                      <button class="btn btn-primary" 
+                              [disabled]="product.stock === 0"
+                              (click)="addToCart(product.id, $event)">
+                        {{ localizationService.t('product.addToCart') }}
+                      </button>
+                      <a [routerLink]="['/products', product.id]" class="btn btn-secondary">
+                        {{ localizationService.t('product.viewDetails') }}
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -146,6 +148,28 @@ import { Product, Category, Brand } from '../shared/models/product.model';
     
     .products-grid {
       margin-bottom: 2rem;
+    }
+    
+    .product-card {
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .product-card-inner {
+      height: 100%;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background-color: #fff;
+      transition: background-color 0.2s;
+    }
+    
+    .product-card-inner:hover {
+      background-color: #f9fafb;
     }
     
     .product-description {
@@ -217,11 +241,30 @@ export class ProductsComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    public localizationService: LocalizationService
+    public localizationService: LocalizationService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.loadData();
+    
+    // Check for query parameters
+    this.route.queryParams.subscribe(params => {
+      if (params['category']) {
+        // Find the category ID based on the category name from the URL
+        this.dataService.getCategories().subscribe(categories => {
+          const category = categories.find(c => 
+            c.name.toLowerCase() === params['category'].toLowerCase()
+          );
+          
+          if (category) {
+            this.selectedCategory = category.id;
+            this.filterProducts();
+          }
+        });
+      }
+    });
   }
 
   loadData() {
@@ -274,11 +317,19 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  addToCart(productId: string) {
+  addToCart(productId: string, event?: Event) {
+    if (event) {
+      event.stopPropagation(); // Prevent triggering the parent click event
+    }
+    
     this.dataService.addToCart(productId).subscribe(success => {
       if (success) {
         alert('Product added to cart!');
       }
     });
+  }
+
+  viewProductDetails(productId: string) {
+    this.router.navigate(['/products', productId]);
   }
 }

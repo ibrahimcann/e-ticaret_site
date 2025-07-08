@@ -1,33 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LocalizationService } from '../shared/services/localization.service';
-import { LanguageSelectorComponent } from '../shared/components/language-selector.component';
 import { DataService } from '../shared/services/data.service';
 import { Cart } from '../shared/models/order.model';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, LanguageSelectorComponent],
+  imports: [CommonModule, RouterModule],
   template: `
     <div class="user-layout">
-      <div class="logo-nav-row">
-        <span class="logo"><h2>🛍️ MY APP</h2></span>
-        <nav class="main-nav">
-          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="main-nav-link">Anasayfa</a>
-          <a routerLink="/products" routerLinkActive="active" class="main-nav-link">Ürünler</a>
-          <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">🛒 Sepet <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span></a>
-          <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">👤 Profil</a>
-        </nav>
-      </div>
-      <div class="offcanvas-menu" [class.open]="menuOpen">
-        <nav class="offcanvas-nav">
-          <a routerLink="/" routerLinkActive="active" class="offcanvas-link">Anasayfa</a>
-          <a routerLink="/products" routerLinkActive="active" class="offcanvas-link">Ürünler</a>
-          <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepet</a>
-          <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">👤 Profil</a>
-        </nav>
+      <div class="header-container">
+        <div class="left-section">
+          <button class="hamburger-icon" (click)="toggleMenu()">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+          <span class="logo" *ngIf="isHomePage"><h2>🛍️ MY APP</h2></span>
+        </div>
+        <div class="search-box" *ngIf="isHomePage">
+          <input type="text" placeholder="Ne aramak istersin?" class="search-input">
+          <button class="search-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="menu-content" *ngIf="menuOpen">
+          <div class="menu-header">
+            <button class="close-btn" (click)="toggleMenu()">✕</button>
+          </div>
+          <nav class="menu-nav">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="menu-link" (click)="toggleMenu()">Anasayfa</a>
+            <a routerLink="/products" routerLinkActive="active" class="menu-link" (click)="toggleMenu()">Ürünler</a>
+            <a routerLink="/cart" routerLinkActive="active" class="menu-link" (click)="toggleMenu()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2.5 3H5l2.68 13.39A2 2 0 0 0 9.62 18h7.76a2 2 0 0 0 1.94-1.61L21.5 6H6"/></svg>
+              Sepet
+            </a>
+            <a routerLink="/profile" routerLinkActive="active" class="menu-link" (click)="toggleMenu()">👤 Profil</a>
+          </nav>
+        </div>
       </div>
       <main>
         <router-outlet></router-outlet>
@@ -68,39 +84,50 @@ import { Cart } from '../shared/models/order.model';
       flex-direction: column;
     }
     
-    .single-header {
-      background: #fff;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
-      padding: 0.7rem 0;
+    main {
+      flex: 1;
     }
     
-    .single-header-row {
+    .header-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 2rem;
+      padding: 15px 20px;
+      width: 100%;
     }
     
-    .header-search-actions {
+    .left-section {
       display: flex;
       align-items: center;
-      gap: 1.2rem;
     }
     
-    .header-search {
-      padding: 0.5rem 1.2rem;
-      border-radius: 2rem;
-      border: 1px solid #ddd;
-      font-size: 1rem;
-      min-width: 200px;
-      margin-right: 0.5rem;
-      background: #fafbfc;
-      transition: border-color 0.2s;
+    .hamburger-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      padding: 10px;
+      background: transparent;
+      border: none;
     }
     
-    .header-search:focus {
-      border-color: #2563eb;
-      outline: none;
+    .hamburger-line {
+      display: block;
+      height: 4px;
+      width: 100%;
+      background-color: #000;
+      border-radius: 2px;
+      margin: 2px 0;
+    }
+    
+    .logo {
+      margin-left: 20px; /* Hamburger menüden 20px sağa */
     }
     
     .logo h2 {
@@ -108,8 +135,88 @@ import { Cart } from '../shared/models/order.model';
       color: #2563eb;
     }
     
-    main {
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50px;
+      padding: 5px 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      width: 250px;
+    }
+    
+    .search-input {
       flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 0;
+      font-size: 16px;
+      color: #333;
+      outline: none;
+    }
+    
+    .search-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    
+    .menu-content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100vh;
+      background-color: #fff;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+    
+    .menu-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 30px;
+    }
+    
+    .close-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+    
+    .menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .menu-link {
+      color: #000;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+    
+    .menu-link.active, .menu-link:hover {
+      color: #2563eb;
     }
     
     .user-footer {
@@ -158,73 +265,44 @@ import { Cart } from '../shared/models/order.model';
     }
     
     @media (max-width: 768px) {
-      .user-nav {
-        flex-direction: column;
-        gap: 1rem;
+      .menu-content {
+        width: 100%;
       }
       
-      .user-nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
+      .search-box {
+        width: 180px;
       }
-      
-      .user-actions {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-    }
-    
-    .logo-nav-row {
-      display: flex;
-      align-items: center;
-      gap: 2.5rem;
-      justify-content: flex-start;
-      padding: 1.2rem 2.5vw 1.2rem 2.5vw;
-      background: #fff;
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.08);
-      margin-bottom: 0.5rem;
-      position: relative;
-      z-index: 10;
-    }
-    .main-nav {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-    }
-    .main-nav-link {
-      color: #222;
-      font-size: 1.15rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-    .main-nav-link.active, .main-nav-link:hover {
-      color: #e11d48;
-      text-decoration: underline;
-    }
-    @media (max-width: 900px) {
-      .logo-nav-row { flex-direction: column; gap: 1.2rem; padding: 1rem 1vw; }
-      .main-nav { gap: 1rem; }
     }
   `]
 })
 export class UserLayoutComponent implements OnInit {
   cartItemCount = 0;
   menuOpen = false;
-  openMenu() { this.menuOpen = true; }
-  closeMenu() { this.menuOpen = false; }
+  isHomePage = false;
 
   constructor(
     public localizationService: LocalizationService,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.dataService.getCart().subscribe(cart => {
       this.cartItemCount = cart?.items.reduce((count, item) => count + item.quantity, 0) || 0;
     });
+    
+    // İlk yükleme kontrolü
+    this.isHomePage = this.router.url === '/' || this.router.url === '';
+    
+    // Sayfa değişikliklerini izle
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.isHomePage = event.url === '/' || event.url === '';
+    });
+  }
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 }

@@ -81,6 +81,14 @@ export const routes: Routes = [
       {
         path: 'pages',
         loadComponent: () => import('./admin/pages.component').then(m => m.AdminPagesComponent)
+      },
+      {
+        path: 'favorites',
+        loadComponent: () => import('./admin/favorites.component').then(m => m.FavoritesComponent)
+      },
+      {
+        path: 'notifications',
+        loadComponent: () => import('./admin/notifications.component').then(m => m.NotificationsComponent)
       }
     ]
   },

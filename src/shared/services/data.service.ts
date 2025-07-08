@@ -166,7 +166,24 @@ export class DataService {
     this.brands.next(sampleBrands);
     this.products.next(sampleProducts);
     this.blogPosts.next(sampleBlogPosts);
-    this.orders.next(sampleOrders);
+
+    // Örnek sepet ekle
+    const exampleCart = {
+      id: '1',
+      userId: '1',
+      items: [
+        {
+          id: '1',
+          productId: '3',
+          product: sampleProducts[2], // Designer T-Shirt
+          quantity: 1,
+          price: sampleProducts[2].price
+        }
+      ],
+      total: sampleProducts[2].price,
+      updatedAt: new Date()
+    };
+    this.cart.next(exampleCart);
   }
 
   // Products
