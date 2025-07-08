@@ -18,6 +18,8 @@ import { Cart } from '../shared/models/order.model';
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="main-nav-link">Anasayfa</a>
           <a routerLink="/products" routerLinkActive="active" class="main-nav-link">Ürünler</a>
           <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">🛒 Sepet <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span></a>
+          <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">{{ localizationService.t('nav.login') }}</a>
+          <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">{{ localizationService.t('nav.register') }}</a>
           <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">👤 Profil</a>
         </nav>
       </div>
@@ -26,6 +28,8 @@ import { Cart } from '../shared/models/order.model';
           <a routerLink="/" routerLinkActive="active" class="offcanvas-link">Anasayfa</a>
           <a routerLink="/products" routerLinkActive="active" class="offcanvas-link">Ürünler</a>
           <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepet</a>
+          <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">{{ localizationService.t('nav.login') }}</a>
+          <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">{{ localizationService.t('nav.register') }}</a>
           <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">👤 Profil</a>
         </nav>
       </div>
