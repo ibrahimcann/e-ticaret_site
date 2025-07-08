@@ -8,6 +8,7 @@ export interface Order {
   billingAddress: Address;
   createdAt: Date;
   updatedAt: Date;
+  paymentType: PaymentType;
 }
 
 export interface OrderItem {
@@ -49,4 +50,11 @@ export interface CartItem {
   product: any;
   quantity: number;
   price: number;
+}
+
+export enum PaymentType {
+  SINGLE = 'Tek Çekim',
+  INSTALLMENT = 'Taksitli Kredi Kartı',
+  CASH_ON_DELIVERY = 'Kapıda Ödeme',
+  BANK_TRANSFER = 'Havale/EFT'
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { Product, Category, Brand } from '../models/product.model';
 import { User } from '../models/user.model';
-import { Order, Cart, OrderStatus } from '../models/order.model';
+import { Order, Cart, OrderStatus, PaymentType } from '../models/order.model';
 import { BlogPost, BlogCategory, Page, PostStatus } from '../models/blog.model';
 
 @Injectable({
@@ -141,10 +141,32 @@ export class DataService {
       }
     ];
 
+    const emptyAddress = {
+      street: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: ''
+    };
+    const now = new Date();
+    const sampleOrders: Order[] = [
+      { id: '1', userId: '1', items: [], total: 199.99, status: OrderStatus.CONFIRMED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000), paymentType: PaymentType.SINGLE },
+      { id: '2', userId: '2', items: [], total: 299.99, status: OrderStatus.PENDING, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000), paymentType: PaymentType.INSTALLMENT },
+      { id: '3', userId: '1', items: [], total: 49.99, status: OrderStatus.CONFIRMED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 3 * 24 * 60 * 60 * 1000), paymentType: PaymentType.CASH_ON_DELIVERY },
+      { id: '4', userId: '3', items: [], total: 1299.99, status: OrderStatus.CANCELLED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 4 * 24 * 60 * 60 * 1000), paymentType: PaymentType.BANK_TRANSFER },
+      { id: '5', userId: '2', items: [], total: 89.99, status: OrderStatus.DELIVERED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000), paymentType: PaymentType.SINGLE },
+      { id: '6', userId: '1', items: [], total: 59.99, status: OrderStatus.PENDING, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000), paymentType: PaymentType.INSTALLMENT },
+      { id: '7', userId: '3', items: [], total: 79.99, status: OrderStatus.CONFIRMED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000), paymentType: PaymentType.CASH_ON_DELIVERY },
+      { id: '8', userId: '2', items: [], total: 109.99, status: OrderStatus.DELIVERED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000), paymentType: PaymentType.BANK_TRANSFER },
+      { id: '9', userId: '1', items: [], total: 39.99, status: OrderStatus.PENDING, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 9 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 9 * 24 * 60 * 60 * 1000), paymentType: PaymentType.SINGLE },
+      { id: '10', userId: '3', items: [], total: 19.99, status: OrderStatus.CONFIRMED, shippingAddress: emptyAddress, billingAddress: emptyAddress, createdAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000), updatedAt: new Date(now.getTime() - 10 * 24 * 60 * 60 * 1000), paymentType: PaymentType.INSTALLMENT }
+    ];
+
     this.categories.next(sampleCategories);
     this.brands.next(sampleBrands);
     this.products.next(sampleProducts);
     this.blogPosts.next(sampleBlogPosts);
+    this.orders.next(sampleOrders);
   }
 
   // Products
@@ -274,5 +296,10 @@ export class DataService {
   clearCart(): Observable<boolean> {
     this.cart.next(null);
     return of(true);
+  }
+
+  // Siparişler
+  getOrders(): Observable<Order[]> {
+    return this.orders.asObservable();
   }
 }
