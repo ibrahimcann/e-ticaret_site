@@ -48,22 +48,6 @@ import { NgChartsModule } from 'ng2-charts';
         </div>
       </div>
       
-      <div class="dashboard-graphs" style="display: flex; gap: 2rem; margin-bottom: 2rem; justify-content: center; align-items: flex-start;">
-        <div class="card" style="flex: 1; max-width: 900px; min-width: 400px; margin: 0 auto; padding: 2.5rem 2.5rem 0.5rem 2.5rem; display: flex; flex-direction: column; align-items: center;">
-          <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1.5rem;">Son 10 Gün Sipariş Grafiği</h2>
-          <canvas baseChart
-            [data]="ordersChartData"
-            [type]="ordersChartType"
-            style="max-width: 100%; height: 440px; margin-bottom: 0;">
-          </canvas>
-          <h2 style="text-align: center; font-size: 2rem; margin-bottom: 1rem;">Ödeme Tipine Göre Siparişler</h2>
-          <canvas baseChart
-            [data]="paymentChartData"
-            [type]="paymentChartType"
-            style="max-width: 100%; height: 280px;">
-          </canvas>
-        </div>
-      </div>
       <div class="recent-section">
         <div class="card">
           <h2>Recent Activity</h2>
@@ -84,6 +68,30 @@ import { NgChartsModule } from 'ng2-charts';
               <span class="activity-time">6 hours ago</span>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="dashboard-graphs">
+        <div class="card graph-card">
+          <h2>Son 10 Gün Sipariş Grafiği</h2>
+          <canvas baseChart
+            class="centered-canvas"
+            [data]="ordersChartData"
+            [type]="ordersChartType"
+            [options]="ordersChartOptions"
+            height="400"
+            width="900">
+          </canvas>
+        </div>
+        <div class="card graph-card">
+          <h2>Ödeme Tipine Göre Siparişler</h2>
+          <canvas baseChart
+            class="centered-canvas"
+            [data]="paymentChartData"
+            [type]="paymentChartType"
+            [options]="paymentChartOptions"
+            height="400"
+            width="500">
+          </canvas>
         </div>
       </div>
     </div>
@@ -139,6 +147,41 @@ import { NgChartsModule } from 'ng2-charts';
       color: #6b7280;
       font-size: 0.875rem;
     }
+    
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .dashboard-graphs {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .graph-card {
+      flex: 1 1 0;
+      min-width: 0;
+      /* min-height: 600px; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: auto;
+      padding: 1.5rem 1rem;
+    }
+    .card {
+      padding: 1.5rem 1rem;
+    }
+    .centered-canvas {
+      display: block;
+      margin: auto;
+      max-width: 100% !important;
+      max-height: 100% !important;
+    }
   `]
 })
 export class AdminDashboardComponent implements OnInit {
@@ -177,6 +220,15 @@ export class AdminDashboardComponent implements OnInit {
     ]
   };
   public paymentChartType: ChartType = 'doughnut';
+
+  public ordersChartOptions: ChartConfiguration<'line'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
+  public paymentChartOptions: ChartConfiguration<'doughnut'>['options'] = {
+    responsive: true,
+    maintainAspectRatio: false
+  };
 
   constructor(
     private dataService: DataService,
