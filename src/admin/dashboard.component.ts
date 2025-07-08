@@ -2,14 +2,39 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../shared/services/data.service';
 import { LocalizationService } from '../shared/services/localization.service';
-import { ChartConfiguration, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
-import { NgChartsModule } from 'ng2-charts';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexLegend,
+  ApexResponsive,
+  ApexNonAxisChartSeries
+} from 'ng-apexcharts';
+
+export type BarChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+  dataLabels: ApexDataLabels;
+};
+
+export type DonutChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: string[];
+  legend: ApexLegend;
+  responsive: ApexResponsive[];
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, NgChartsModule],
+  imports: [CommonModule, NgApexchartsModule],
   template: `
     <div class="dashboard">
       <h1>{{ localizationService.t('admin.dashboard') }}</h1>
@@ -48,6 +73,27 @@ import { NgChartsModule } from 'ng2-charts';
         </div>
       </div>
       
+      <div class="dashboard-graphs">
+        <div class="card graph-card">
+          <apx-chart
+            [series]="barChartOptions.series"
+            [chart]="barChartOptions.chart"
+            [xaxis]="barChartOptions.xaxis"
+            [title]="barChartOptions.title"
+            [dataLabels]="barChartOptions.dataLabels">
+          </apx-chart>
+        </div>
+        <div class="card graph-card">
+          <apx-chart
+            [series]="donutChartOptions.series"
+            [chart]="donutChartOptions.chart"
+            [labels]="donutChartOptions.labels"
+            [legend]="donutChartOptions.legend"
+            [responsive]="donutChartOptions.responsive"
+            [title]="donutChartOptions.title">
+          </apx-chart>
+        </div>
+      </div>
       <div class="recent-section">
         <div class="card">
           <h2>Recent Activity</h2>
@@ -68,30 +114,6 @@ import { NgChartsModule } from 'ng2-charts';
               <span class="activity-time">6 hours ago</span>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="dashboard-graphs">
-        <div class="card graph-card">
-          <h2>Son 10 Gün Sipariş Grafiği</h2>
-          <canvas baseChart
-            class="centered-canvas"
-            [data]="ordersChartData"
-            [type]="ordersChartType"
-            [options]="ordersChartOptions"
-            height="400"
-            width="900">
-          </canvas>
-        </div>
-        <div class="card graph-card">
-          <h2>Ödeme Tipine Göre Siparişler</h2>
-          <canvas baseChart
-            class="centered-canvas"
-            [data]="paymentChartData"
-            [type]="paymentChartType"
-            [options]="paymentChartOptions"
-            height="400"
-            width="500">
-          </canvas>
         </div>
       </div>
     </div>
@@ -192,42 +214,29 @@ export class AdminDashboardComponent implements OnInit {
     blogPosts: 0
   };
 
-  // Grafik verileri
-  public ordersChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [], // Son 10 gün
-    datasets: [
-      {
-        data: [],
-        label: 'Siparişler',
-        fill: true,
-        tension: 0.5,
-        borderColor: '#2563eb',
-        backgroundColor: 'rgba(37,99,235,0.1)'
-      }
-    ]
+  public barChartOptions: BarChartOptions = {
+    series: [{ name: 'Siparişler', data: [] }],
+    chart: { type: 'bar', height: 400 },
+    xaxis: { categories: [] },
+    title: { text: 'Son 10 Gün Sipariş Grafiği' },
+    dataLabels: { enabled: false }
   };
-  public ordersChartType: ChartType = 'line';
 
-  // Ödeme tipine göre sipariş grafiği verisi
-  public paymentChartData: ChartConfiguration<'doughnut'>['data'] = {
+  public donutChartOptions: DonutChartOptions = {
+    series: [],
+    chart: { type: 'donut', height: 400 },
     labels: ['Tek Çekim', 'Taksitli Kredi Kartı', 'Kapıda Ödeme', 'Havale/EFT'],
-    datasets: [
+    legend: { position: 'top' },
+    responsive: [
       {
-        data: [0, 0, 0, 0],
-        backgroundColor: ['#22c55e', '#a21caf', '#06b6d4', '#eab308'],
-        hoverBackgroundColor: ['#16a34a', '#7e22ce', '#0891b2', '#ca8a04']
+        breakpoint: 480,
+        options: {
+          chart: { width: 300 },
+          legend: { position: 'bottom' }
+        }
       }
-    ]
-  };
-  public paymentChartType: ChartType = 'doughnut';
-
-  public ordersChartOptions: ChartConfiguration<'line'>['options'] = {
-    responsive: true,
-    maintainAspectRatio: false
-  };
-  public paymentChartOptions: ChartConfiguration<'doughnut'>['options'] = {
-    responsive: true,
-    maintainAspectRatio: false
+    ],
+    title: { text: 'Ödeme Tipine Göre Siparişler' }
   };
 
   constructor(
@@ -239,53 +248,35 @@ export class AdminDashboardComponent implements OnInit {
     this.dataService.getProducts().subscribe(products => {
       this.stats.products = products.length;
     });
-    
     this.dataService.getBlogPosts().subscribe(posts => {
       this.stats.blogPosts = posts.length;
     });
-    
-    // Mock data for users and orders
     this.stats.users = 156;
     this.stats.orders = 89;
 
-    // Son 10 günün siparişlerini getir
-    this.dataService.getOrders().subscribe((orders: any[]) => {
-      const last10Days = Array.from({length: 10}, (_, i) => {
-        const d = new Date();
-        d.setDate(d.getDate() - (9 - i));
-        return d.toISOString().slice(0, 10);
-      });
-
-      this.ordersChartData.labels = last10Days;
-
-      const ordersPerDay = last10Days.map(date =>
-        orders.filter((o: any) => o.created_at?.slice(0, 10) === date).length
-      );
-      this.ordersChartData.datasets[0].data = ordersPerDay;
-
-      // Ödeme tipine göre dağılım
-      const paymentCounts = [0, 0, 0, 0];
-      orders.forEach(order => {
-        switch (order.paymentType) {
-          case 'Tek Çekim':
-          case 0:
-            paymentCounts[0]++;
-            break;
-          case 'Taksitli Kredi Kartı':
-          case 1:
-            paymentCounts[1]++;
-            break;
-          case 'Kapıda Ödeme':
-          case 2:
-            paymentCounts[2]++;
-            break;
-          case 'Havale/EFT':
-          case 3:
-            paymentCounts[3]++;
-            break;
+    // SABİT (MOCK) VERİ İLE GRAFİKLERİ DOLDUR
+    this.barChartOptions = {
+      series: [{ name: 'Siparişler', data: [2, 1, 3, 0, 4, 2, 1, 5, 3, 2] }],
+      chart: { type: 'bar', height: 400 },
+      xaxis: { categories: ['2025-06-29','2025-06-30','2025-07-01','2025-07-02','2025-07-03','2025-07-04','2025-07-05','2025-07-06','2025-07-07','2025-07-08'] },
+      title: { text: 'Son 10 Gün Sipariş Grafiği' },
+      dataLabels: { enabled: false }
+    };
+    this.donutChartOptions = {
+      series: [5, 3, 2, 4],
+      chart: { type: 'donut', height: 400 },
+      labels: ['Tek Çekim', 'Taksitli Kredi Kartı', 'Kapıda Ödeme', 'Havale/EFT'],
+      legend: { position: 'top' },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: { width: 300 },
+            legend: { position: 'bottom' }
+          }
         }
-      });
-      this.paymentChartData.datasets[0].data = paymentCounts;
-    });
+      ],
+      title: { text: 'Ödeme Tipine Göre Siparişler' }
+    };
   }
 }
