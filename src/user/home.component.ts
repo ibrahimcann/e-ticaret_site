@@ -22,6 +22,37 @@ import { RouterModule } from '@angular/router';
         <button class="slider-arrow right" (click)="nextSlide()">&#10095;</button>
       </section>
 
+      <!-- Kategori Grid Bölümü (Banner altı, önerilenler üstü) -->
+      <section class="category-grid-section">
+        <h2 class="category-grid-title">SEÇİLİ ÜRÜNLERDE %40'A VARAN İNDİRİM</h2>
+        <div class="category-grid">
+          <div class="category-card">
+            <img src="https://i.imgur.com/8Qf6Q2v.png" alt="T-shirt" />
+            <span class="category-label">T-SHIRT</span>
+          </div>
+          <div class="category-card">
+            <img src="https://i.imgur.com/0Qf6Q2v.png" alt="Pantolon" />
+            <span class="category-label">PANTOLON</span>
+          </div>
+          <div class="category-card">
+            <img src="https://i.imgur.com/1Qf6Q2v.png" alt="Gömlek" />
+            <span class="category-label">GÖMLEK</span>
+          </div>
+          <div class="category-card">
+            <img src="https://i.imgur.com/2Qf6Q2v.png" alt="Elbise" />
+            <span class="category-label">ELBİSE</span>
+          </div>
+          <div class="category-card">
+            <img src="https://i.imgur.com/3Qf6Q2v.png" alt="Denizatı" />
+            <span class="category-label">DENİZATI</span>
+          </div>
+          <div class="category-card">
+            <img src="https://i.imgur.com/4Qf6Q2v.png" alt="Terlik" />
+            <span class="category-label">TERLİK</span>
+          </div>
+        </div>
+      </section>
+
       <!-- Önerilen Ürünler Bölümü -->
       <section class="recommend-section">
         <h2 class="recommend-title">SENİN İÇİN ÖNERİLENLER</h2>
@@ -618,6 +649,15 @@ import { RouterModule } from '@angular/router';
       .newsletter-btn, .newsletter-input { max-width: 100%; }
       .newsletter-cancel { align-self: center; }
     }
+    .category-grid-section { width: 100%; background: #fff; padding: 2.5rem 0 1.5rem 0; text-align: center; }
+    .category-grid-title { font-size: 2.1rem; font-weight: 800; margin-bottom: 2.2rem; letter-spacing: 1px; text-transform: uppercase; }
+    .category-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 2.2rem; max-width: 1100px; margin: 0 auto; }
+    .category-card { background: #f8fafc; border-radius: 18px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2.2rem 1.2rem 1.5rem 1.2rem; transition: box-shadow 0.18s, transform 0.18s; cursor: pointer; }
+    .category-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.13); transform: translateY(-4px) scale(1.03); }
+    .category-card img { width: 120px; height: 120px; object-fit: contain; margin-bottom: 1.2rem; }
+    .category-label { font-size: 1.25rem; font-weight: 700; color: #222; letter-spacing: 1px; text-transform: uppercase; }
+    @media (max-width: 900px) { .category-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .category-grid { grid-template-columns: 1fr; grid-template-rows: repeat(6, 1fr); } .category-card img { width: 90px; height: 90px; } }
   `]
 })
 export class HomeComponent implements OnInit {
