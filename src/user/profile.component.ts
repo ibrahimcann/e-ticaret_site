@@ -35,6 +35,7 @@ import { FormsModule } from '@angular/forms';
               <span class="icon">❓</span> SSS ve İletişim
             </li>
           </ul>
+<<<<<<< HEAD
         </nav>
       </aside>
       <section class="profile-content-area">
@@ -52,6 +53,37 @@ import { FormsModule } from '@angular/forms';
               <button class="profile-find-order-btn">SİPARİŞİ BUL</button>
             </div>
             <!-- Sipariş listesi örneği eklenebilir -->
+=======
+          <button class="register-btn" (click)="showRegisterForm = true">HESAP OLUŞTUR</button>
+        </div>
+      </div>
+      <div *ngIf="showRegisterForm && !isLoggedIn" class="register-form-modal">
+        <form class="register-form" (ngSubmit)="register()" #registerForm="ngForm">
+          <h2>Hesap Oluştur</h2>
+          <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
+          <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
+          <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
+          <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
+          <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
+          <button type="submit" class="register-btn">Kaydol</button>
+          <button type="button" class="register-btn" style="background:#eee;color:#222;border:1px solid #ccc;margin-top:0.5rem;" (click)="showRegisterForm = false">Vazgeç</button>
+          <div *ngIf="registerError" style="color:#dc2626; margin-top:1rem; text-align:center;">{{registerError}}</div>
+        </form>
+      </div>
+      <div *ngIf="isLoggedIn" class="welcome-message">
+        <h2>Hoş geldin, {{userData?.firstName}}!</h2>
+        <div class="profile-info-box">
+          <p><strong>Ad:</strong> {{userData?.firstName}}</p>
+          <p><strong>Soyad:</strong> {{userData?.lastName}}</p>
+          <p><strong>E-posta:</strong> {{userData?.email}}</p>
+          <p><strong>Telefon:</strong> {{userData?.phone}}</p>
+          <p><strong>Şifre:</strong> 
+            <span>{{ showPassword ? userData?.password : maskedPassword }}</span>
+            <button type="button" class="show-hide-btn" (click)="togglePassword()">{{ showPassword ? 'Gizle' : 'Göster' }}</button>
+          </p>
+          <div class="change-password-link">
+            <a href="#" (click)="showChangePassword = true" style="text-decoration: none;">Şifreyi değiştir</a>
+>>>>>>> main
           </div>
           <div *ngSwitchCase="'info'">
             <h2 class="profile-section-title">KİŞİSEL BİLGİLER</h2>

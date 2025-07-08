@@ -17,7 +17,10 @@ import { Cart } from '../shared/models/order.model';
         <nav class="main-nav">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="main-nav-link">Anasayfa</a>
           <a routerLink="/products" routerLinkActive="active" class="main-nav-link">Ürünler</a>
-          <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">🛒 Sepet <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span></a>
+          <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2.5 3H5l2.68 13.39A2 2 0 0 0 9.62 18h7.76a2 2 0 0 0 1.94-1.61L21.5 6H6"/></svg>
+            Sepet
+          </a>
           <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">👤 Profil</a>
         </nav>
       </div>
@@ -192,7 +195,7 @@ import { Cart } from '../shared/models/order.model';
       gap: 2rem;
     }
     .main-nav-link {
-      color: #222;
+      color: #000;
       font-size: 1.15rem;
       font-weight: 600;
       text-decoration: none;
@@ -202,8 +205,12 @@ import { Cart } from '../shared/models/order.model';
       gap: 0.3rem;
     }
     .main-nav-link.active, .main-nav-link:hover {
-      color: #e11d48;
+      color: #000;
       text-decoration: underline;
+    }
+    .main-nav-link svg {
+      stroke: #000 !important;
+      transition: stroke 0.2s;
     }
     @media (max-width: 900px) {
       .logo-nav-row { flex-direction: column; gap: 1.2rem; padding: 1rem 1vw; }

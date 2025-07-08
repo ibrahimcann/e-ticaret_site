@@ -1,3 +1,6 @@
+import { registerLocaleData } from '@angular/common';
+import localeTr from '@angular/common/locales/tr';
+registerLocaleData(localeTr);
 import { Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
