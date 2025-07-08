@@ -35,7 +35,6 @@ import { FormsModule } from '@angular/forms';
               <span class="icon">❓</span> SSS ve İletişim
             </li>
           </ul>
-<<<<<<< HEAD
         </nav>
       </aside>
       <section class="profile-content-area">
@@ -53,37 +52,6 @@ import { FormsModule } from '@angular/forms';
               <button class="profile-find-order-btn">SİPARİŞİ BUL</button>
             </div>
             <!-- Sipariş listesi örneği eklenebilir -->
-=======
-          <button class="register-btn" (click)="showRegisterForm = true">HESAP OLUŞTUR</button>
-        </div>
-      </div>
-      <div *ngIf="showRegisterForm && !isLoggedIn" class="register-form-modal">
-        <form class="register-form" (ngSubmit)="register()" #registerForm="ngForm">
-          <h2>Hesap Oluştur</h2>
-          <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
-          <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
-          <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
-          <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
-          <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
-          <button type="submit" class="register-btn">Kaydol</button>
-          <button type="button" class="register-btn" style="background:#eee;color:#222;border:1px solid #ccc;margin-top:0.5rem;" (click)="showRegisterForm = false">Vazgeç</button>
-          <div *ngIf="registerError" style="color:#dc2626; margin-top:1rem; text-align:center;">{{registerError}}</div>
-        </form>
-      </div>
-      <div *ngIf="isLoggedIn" class="welcome-message">
-        <h2>Hoş geldin, {{userData?.firstName}}!</h2>
-        <div class="profile-info-box">
-          <p><strong>Ad:</strong> {{userData?.firstName}}</p>
-          <p><strong>Soyad:</strong> {{userData?.lastName}}</p>
-          <p><strong>E-posta:</strong> {{userData?.email}}</p>
-          <p><strong>Telefon:</strong> {{userData?.phone}}</p>
-          <p><strong>Şifre:</strong> 
-            <span>{{ showPassword ? userData?.password : maskedPassword }}</span>
-            <button type="button" class="show-hide-btn" (click)="togglePassword()">{{ showPassword ? 'Gizle' : 'Göster' }}</button>
-          </p>
-          <div class="change-password-link">
-            <a href="#" (click)="showChangePassword = true" style="text-decoration: none;">Şifreyi değiştir</a>
->>>>>>> main
           </div>
           <div *ngSwitchCase="'info'">
             <h2 class="profile-section-title">KİŞİSEL BİLGİLER</h2>
@@ -249,62 +217,76 @@ import { FormsModule } from '@angular/forms';
     }
     .profile-empty-orders {
       text-align: center;
-      margin-top: 3rem;
+      padding: 3rem 2rem;
+      background: #f9f9f9;
+      border-radius: 1rem;
     }
     .profile-empty-orders h3 {
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 800;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
       letter-spacing: 1px;
-      text-transform: uppercase;
+    }
+    .profile-empty-orders p {
+      color: #555;
+      margin-bottom: 1.5rem;
     }
     .profile-find-order-btn {
       background: #111;
       color: #fff;
       border: none;
-      border-radius: 2rem;
-      padding: 1.2rem 4rem;
-      font-size: 1.25rem;
+      padding: 0.8rem 2.5rem;
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 2rem;
-      transition: background 0.2s;
-      box-shadow: none;
+      border-radius: 2rem;
+      transition: background 0.18s;
     }
     .profile-find-order-btn:hover {
-      background: #2563eb;
+      background: #333;
+    }
+    .profile-info-list {
+      font-size: 1.1rem;
+      line-height: 2;
     }
     .profile-info-list p {
-      font-size: 1.15rem;
-      margin-bottom: 1.1rem;
+      margin-bottom: 0.8rem;
     }
-    @media (max-width: 900px) {
+    .profile-info-list strong {
+      display: inline-block;
+      width: 120px;
+      font-weight: 600;
+    }
+    @media (max-width: 768px) {
       .profile-main-layout {
         flex-direction: column;
-        max-width: 98vw;
       }
       .profile-sidebar {
         width: 100%;
-        flex-direction: row;
-        justify-content: flex-start;
         border-right: none;
         border-bottom: 1px solid #eee;
-        padding: 1.2rem 0.5rem;
+        padding: 2rem 1rem;
       }
       .profile-content-area {
-        padding: 2rem 1rem;
+        padding: 2rem 1.5rem;
+      }
+      .profile-section-title {
+        font-size: 1.8rem;
+      }
+      .profile-orders-tabs {
+        flex-wrap: wrap;
       }
     }
   `]
 })
 export class ProfileComponent {
   user = {
-    firstName: 'hamiyet',
+    firstName: 'Ayşe',
     lastName: 'Yılmaz',
-    email: 'hamiyet@example.com',
-    phone: '+90 555 123 4567',
-    // avatar: ...
+    email: 'ayse.yilmaz@example.com',
+    phone: '+90 555 123 4567'
   };
+  
   selectedMenu: string = 'orders';
   orderTab: string = 'online';
   orders: any[] = [];

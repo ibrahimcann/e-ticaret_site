@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
       <!-- Banner/Slider -->
       <section class="banner">
         <img class="banner-bg" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Deniz ve Palmiye" />
+        <img class="banner-bg" src="https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&w=1200&q=80" alt="Moda Çekimi" style="opacity: 0; transition: opacity 1s ease;" />
         <img class="banner-car" src="https://pngimg.com/d/bmw_PNG99585.png" alt="Kırmızı Araba" />
         <img class="banner-model1" src="https://i.imgur.com/0y0y0y0.png" alt="Model 1" />
         <img class="banner-model2" src="https://i.imgur.com/1x1x1x1.png" alt="Model 2" />
@@ -17,39 +18,8 @@ import { RouterModule } from '@angular/router';
           <div class="yeni">YENİ</div>
           <a href="#" class="see-all">TÜMÜNÜ GÖR</a>
         </div>
-        <button class="slider-arrow left">&#10094;</button>
-        <button class="slider-arrow right">&#10095;</button>
-      </section>
-
-      <!-- Kategori Grid Bölümü -->
-      <section class="category-section">
-        <h2 class="category-title">SEÇİLİ ÜRÜNLERDE -%40'A VARAN İNDİRİM</h2>
-        <div class="category-grid">
-          <a [routerLink]="['/products']" [queryParams]="{category: 'tshirt'}" class="category-card">
-            <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="T-shirt">
-            <span class="category-label">T-SHIRT</span>
-          </a>
-          <a [routerLink]="['/products']" [queryParams]="{category: 'pants'}" class="category-card">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Pantolon">
-            <span class="category-label">PANTOLON</span>
-          </a>
-          <a [routerLink]="['/products']" [queryParams]="{category: 'shirt'}" class="category-card">
-            <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Gömlek">
-            <span class="category-label">GÖMLEK</span>
-          </a>
-          <a [routerLink]="['/products']" [queryParams]="{category: 'dress'}" class="category-card">
-            <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7b29?auto=format&fit=crop&w=400&q=80" alt="Elbise">
-            <span class="category-label">ELBİSE</span>
-          </a>
-          <a [routerLink]="['/products']" [queryParams]="{category: 'accessories'}" class="category-card">
-            <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80" alt="At">
-            <span class="category-label">AT</span>
-          </a>
-          <a [routerLink]="['/products']" [queryParams]="{category: 'shoes'}" class="category-card">
-            <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Ayakkabı">
-            <span class="category-label">AYAKKABI</span>
-          </a>
-        </div>
+        <button class="slider-arrow left" (click)="prevSlide()">&#10094;</button>
+        <button class="slider-arrow right" (click)="nextSlide()">&#10095;</button>
       </section>
 
       <!-- Önerilen Ürünler Bölümü -->
@@ -187,28 +157,36 @@ import { RouterModule } from '@angular/router';
       background: #fff;
       min-height: 100vh;
       position: relative;
+      margin: 0;
+      padding: 0;
     }
     .banner {
       position: relative;
       width: 100%;
-      height: 480px;
+      height: 100vh;
       background: #e0f2fe;
       overflow: hidden;
       display: flex;
       align-items: flex-end;
       justify-content: center;
+      margin: 0;
+      padding: 0;
     }
     .banner-bg {
       position: absolute;
       left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;
       filter: brightness(0.95);
     }
+    .banner-bg:nth-child(1) {
+      opacity: 1;
+      transition: opacity 1s ease;
+    }
     .banner-car {
       position: absolute;
       left: 10%;
       bottom: 0;
-      width: 60vw;
-      max-width: 700px;
+      width: 70vw;
+      max-width: 800px;
       z-index: 2;
       filter: drop-shadow(0 8px 32px rgba(0,0,0,0.18));
     }
@@ -216,20 +194,20 @@ import { RouterModule } from '@angular/router';
       position: absolute;
       left: 38%;
       bottom: 0;
-      width: 170px;
+      width: 200px;
       z-index: 3;
     }
     .banner-model2 {
       position: absolute;
       right: 18%;
       bottom: 0;
-      width: 180px;
+      width: 210px;
       z-index: 3;
     }
     .banner-text {
       position: absolute;
       left: 18%;
-      bottom: 90px;
+      bottom: 120px;
       z-index: 4;
       color: #fff;
       text-shadow: 0 2px 8px rgba(0,0,0,0.18);
@@ -238,16 +216,16 @@ import { RouterModule } from '@angular/router';
       align-items: flex-start;
     }
     .yeni {
-      font-size: 2.5rem;
+      font-size: 3.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       letter-spacing: 1px;
     }
     .see-all {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       color: #fff;
       background: rgba(0,0,0,0.18);
-      padding: 0.3rem 1.2rem;
+      padding: 0.5rem 1.5rem;
       border-radius: 2rem;
       text-decoration: none;
       font-weight: 500;
@@ -290,55 +268,6 @@ import { RouterModule } from '@angular/router';
       padding: 0.7rem 0;
       z-index: 20;
       box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
-    }
-    .category-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem 1rem 2rem 1rem;
-      text-align: center;
-    }
-    .category-title {
-      font-size: 2.7rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 2.5rem;
-      margin-top: 1.5rem;
-    }
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-    }
-    .category-card {
-      position: relative;
-      overflow: hidden;
-      border-radius: 0.18rem;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-      background: #fff;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-    }
-    .category-card:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.13);
-    }
-    .category-card img {
-      width: 100%;
-      height: 260px;
-      object-fit: cover;
-      display: block;
-      filter: saturate(1.1);
-    }
-    .category-label {
-      position: absolute;
-      left: 0; right: 0; bottom: 18px;
-      color: #fff;
-      font-size: 2rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      text-align: center;
-      pointer-events: none;
     }
     .recommend-section {
       max-width: 1400px;
@@ -486,33 +415,22 @@ import { RouterModule } from '@angular/router';
       transform: translateY(-5px);
     }
     
-    .category-card {
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    
-    .category-card:hover {
-      transform: translateY(-5px);
-    }
     @media (max-width: 900px) {
+      .banner { height: 580px; }
       .banner-car { left: 0; width: 90vw; }
-      .banner-model1 { left: 20%; width: 120px; }
-      .banner-model2 { right: 5%; width: 120px; }
-      .banner-text { left: 8%; bottom: 60px; }
-      .category-grid { grid-template-columns: 1fr 1fr; }
+      .banner-model1 { left: 20%; width: 150px; }
+      .banner-model2 { right: 5%; width: 150px; }
+      .banner-text { left: 8%; bottom: 80px; }
       .recommend-title { font-size: 1.5rem; }
       .recommend-card img { height: 100px; }
     }
     @media (max-width: 600px) {
-      .banner { height: 260px; }
+      .banner { height: 400px; }
       .banner-car { width: 100vw; }
-      .banner-model1, .banner-model2 { width: 70px; }
-      .banner-text { font-size: 1.1rem; left: 4%; bottom: 30px; }
+      .banner-model1, .banner-model2 { width: 100px; }
+      .banner-text { font-size: 1.1rem; left: 4%; bottom: 50px; }
+      .yeni { font-size: 2.5rem; }
       .info-bar { font-size: 0.9rem; gap: 0.7rem; padding: 0.5rem 0; }
-      .category-title { font-size: 1.3rem; }
-      .category-grid { grid-template-columns: 1fr; gap: 1rem; }
-      .category-card img { height: 160px; }
-      .category-label { font-size: 1.1rem; }
       .recommend-title { font-size: 1.1rem; }
       .recommend-row { gap: 0.3rem; }
       .recommend-card img { height: 60px; }
@@ -702,8 +620,17 @@ import { RouterModule } from '@angular/router';
     }
   `]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   @ViewChild('recommendRow', { static: false }) recommendRow!: ElementRef;
+  currentSlide = 0;
+  totalSlides = 2;
+
+  ngOnInit() {
+    // Slider başlangıç ayarları
+    setTimeout(() => {
+      this.updateSlides();
+    }, 100);
+  }
 
   scrollRecommend(direction: number) {
     const row = this.recommendRow?.nativeElement;
@@ -711,5 +638,26 @@ export class HomeComponent {
       const scrollAmount = row.offsetWidth * 0.7;
       row.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
     }
+  }
+
+  nextSlide() {
+    this.currentSlide = (this.currentSlide + 1) % this.totalSlides;
+    this.updateSlides();
+  }
+
+  prevSlide() {
+    this.currentSlide = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+    this.updateSlides();
+  }
+
+  updateSlides() {
+    const slides = document.querySelectorAll('.banner-bg');
+    slides.forEach((slide: any, index) => {
+      if (index === this.currentSlide) {
+        slide.style.opacity = '1';
+      } else {
+        slide.style.opacity = '0';
+      }
+    });
   }
 }
