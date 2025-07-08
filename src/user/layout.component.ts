@@ -196,7 +196,7 @@ import { Cart } from '../shared/models/order.model';
       gap: 2rem;
     }
     .main-nav-link {
-      color: #222;
+      color: #000;
       font-size: 1.15rem;
       font-weight: 600;
       text-decoration: none;
@@ -206,8 +206,12 @@ import { Cart } from '../shared/models/order.model';
       gap: 0.3rem;
     }
     .main-nav-link.active, .main-nav-link:hover {
-      color: #e11d48;
+      color: #000;
       text-decoration: underline;
+    }
+    .main-nav-link svg {
+      stroke: #000 !important;
+      transition: stroke 0.2s;
     }
     @media (max-width: 900px) {
       .logo-nav-row { flex-direction: column; gap: 1.2rem; padding: 1rem 1vw; }

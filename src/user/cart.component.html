@@ -1,0 +1,31 @@
+<div class="cart-container">
+  <div class="cart-items">
+    <h1>SEPETİN ({{cartItems.length}})</h1>
+    <div *ngFor="let item of cartItems" class="cart-item">
+      <img [src]="item.image" alt="{{item.name}}" />
+      <div class="item-details">
+        <div class="item-title">{{item.name}}</div>
+        <div class="item-variant">S | {{item.color}}</div>
+        <div class="item-price">{{item.price | currency:'TRY'}}</div>
+        <div class="item-quantity">
+          <button (click)="decrease(item)">-</button>
+          <span>{{item.quantity}}</span>
+          <button (click)="increase(item)">+</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cart-summary">
+    <h2>ÖZET</h2>
+    <div>1 ürün <span>{{total | currency:'TRY'}}</span></div>
+    <div>Mağazaya gönderi <span class="free">Ücretsiz!</span></div>
+    <div class="total">
+      <span>TOPLAM</span>
+      <span>{{total | currency:'TRY'}}</span>
+    </div>
+    <button class="checkout-btn">SİPARİŞİ İŞLEME KOY</button>
+    <div class="info">Ürünler rezerve edilmedi. Tükenme riskini alma!</div>
+    <div class="promo">Kampanya kodun var mı?</div>
+    <div class="gift">Bir sonraki ekranda hediye seçeneklerini seç</div>
+  </div>
+</div> 
