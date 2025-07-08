@@ -4,6 +4,7 @@ import { Product, Category, Brand } from '../models/product.model';
 import { User } from '../models/user.model';
 import { Order, Cart, OrderStatus, PaymentType } from '../models/order.model';
 import { BlogPost, BlogCategory, Page, PostStatus } from '../models/blog.model';
+import { ChartType } from 'chart.js';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,9 @@ export class DataService {
   private blogPosts = new BehaviorSubject<BlogPost[]>([]);
   private pages = new BehaviorSubject<Page[]>([]);
   private cart = new BehaviorSubject<Cart | null>(null);
+
+  public ordersChartType: ChartType = 'line';
+  public paymentChartType: ChartType = 'doughnut';
 
   constructor() {
     this.initializeSampleData();
