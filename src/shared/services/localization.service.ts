@@ -36,6 +36,8 @@ export class LocalizationService {
       'admin.orders': 'Orders',
       'admin.blog': 'Blog',
       'admin.pages': 'Pages',
+      'admin.favorites': 'Favorites',
+      'admin.notifications': 'Notifications',
       
       // Common
       'common.add': 'Add',
@@ -93,6 +95,8 @@ export class LocalizationService {
       'admin.orders': 'Siparişler',
       'admin.blog': 'Blog',
       'admin.pages': 'Sayfalar',
+      'admin.favorites': 'Favori Ürünler',
+      'admin.notifications': 'Bildirimler',
       
       // Common
       'common.add': 'Ekle',
