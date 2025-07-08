@@ -9,86 +9,113 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <div class="profile-main-layout">
-      <aside class="profile-sidebar">
-        <div class="profile-userbox">
-          <img class="profile-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Profil Fotoğrafı">
-          <div class="profile-hello">Merhaba, <span class="profile-username">{{user.firstName}}</span></div>
+      <ng-container *ngIf="!isLoggedIn">
+        <div class="profile-login-register-box">
+          <div class="profile-login">
+            <h2>GİRİŞ YAP</h2>
+            <form (ngSubmit)="login()" #loginForm="ngForm">
+              <input type="email" placeholder="E-posta adresinizi girin" required [(ngModel)]="loginEmail" name="loginEmail" />
+              <input type="password" placeholder="Parola" required [(ngModel)]="loginPassword" name="loginPassword" />
+              <button type="submit" class="login-btn">GİRİŞ YAP</button>
+              <div *ngIf="loginError" class="profile-error">{{loginError}}</div>
+            </form>
+          </div>
+          <div class="profile-register">
+            <h2>HESAP OLUŞTUR</h2>
+            <form (ngSubmit)="register()" #registerForm="ngForm">
+              <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
+              <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
+              <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
+              <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
+              <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
+              <button type="submit" class="register-btn">KAYIT OL</button>
+              <div *ngIf="registerError" class="profile-error">{{registerError}}</div>
+            </form>
+          </div>
         </div>
-        <nav class="profile-menu">
-          <ul>
-            <li [class.active]="selectedMenu==='orders'" (click)="selectedMenu='orders'">
-              <span class="icon">📦</span> Sipariş ve İadeler
-            </li>
-            <li [class.active]="selectedMenu==='info'" (click)="selectedMenu='info'">
-              <span class="icon">👤</span> Kişisel Bilgiler
-            </li>
-            <li [class.active]="selectedMenu==='addresses'" (click)="selectedMenu='addresses'">
-              <span class="icon">📖</span> Adresler
-            </li>
-            <li [class.active]="selectedMenu==='payments'" (click)="selectedMenu='payments'">
-              <span class="icon">💳</span> Ödeme Yöntemleri
-            </li>
-            <li [class.active]="selectedMenu==='wishlist'" (click)="selectedMenu='wishlist'">
-              <span class="icon">🤍</span> Wishlist
-            </li>
-            <li [class.active]="selectedMenu==='faq'" (click)="selectedMenu='faq'">
-              <span class="icon">❓</span> SSS ve İletişim
-            </li>
-          </ul>
-        </nav>
-      </aside>
-      <section class="profile-content-area">
-        <ng-container [ngSwitch]="selectedMenu">
-          <div *ngSwitchCase="'orders'">
-            <h2 class="profile-section-title">SİPARİŞ VE İADELER</h2>
-            <div class="profile-orders-tabs">
-              <button [class.active]="orderTab==='online'" (click)="orderTab='online'">Çevrimiçi</button>
-              <button [class.active]="orderTab==='store'" (click)="orderTab='store'">Mağazada</button>
-              <button [class.active]="orderTab==='returns'" (click)="orderTab='returns'">İadeler</button>
-            </div>
-            <div *ngIf="orders.length === 0" class="profile-empty-orders">
-              <h3>ALIŞVERİŞİNİZ YOK!</h3>
-              <p>Siparişini bulamıyorsan, alışverişi misafir olarak yapmış olabilirsin.</p>
-              <button class="profile-find-order-btn">SİPARİŞİ BUL</button>
-            </div>
-            <!-- Sipariş listesi örneği eklenebilir -->
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <aside class="profile-sidebar">
+          <div class="profile-userbox">
+            <img class="profile-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Profil Fotoğrafı">
+            <div class="profile-hello">Merhaba, <span class="profile-username">{{userData?.firstName}}</span></div>
           </div>
-          <div *ngSwitchCase="'info'">
-            <h2 class="profile-section-title">KİŞİSEL BİLGİLER</h2>
-            <div class="profile-info-list">
-              <p><strong>Ad:</strong> {{user.firstName}}</p>
-              <p><strong>Soyad:</strong> {{user.lastName}}</p>
-              <p><strong>E-posta:</strong> {{user.email}}</p>
-              <p><strong>Telefon:</strong> {{user.phone}}</p>
-            </div>
-          </div>
-          <div *ngSwitchCase="'addresses'">
-            <h2 class="profile-section-title">ADRESLER</h2>
-            <div *ngIf="addresses.length === 0">Kayıtlı adresiniz yok.</div>
-            <ul *ngIf="addresses.length > 0">
-              <li *ngFor="let addr of addresses">{{addr}}</li>
+          <nav class="profile-menu">
+            <ul>
+              <li [class.active]="selectedMenu==='orders'" (click)="selectedMenu='orders'">
+                <span class="icon">📦</span> Sipariş ve İadeler
+              </li>
+              <li [class.active]="selectedMenu==='info'" (click)="selectedMenu='info'">
+                <span class="icon">👤</span> Kişisel Bilgiler
+              </li>
+              <li [class.active]="selectedMenu==='addresses'" (click)="selectedMenu='addresses'">
+                <span class="icon">📖</span> Adresler
+              </li>
+              <li [class.active]="selectedMenu==='payments'" (click)="selectedMenu='payments'">
+                <span class="icon">💳</span> Ödeme Yöntemleri
+              </li>
+              <li [class.active]="selectedMenu==='wishlist'" (click)="selectedMenu='wishlist'">
+                <span class="icon">🤍</span> Wishlist
+              </li>
+              <li [class.active]="selectedMenu==='faq'" (click)="selectedMenu='faq'">
+                <span class="icon">❓</span> SSS ve İletişim
+              </li>
+              <li (click)="logout()" style="color:#dc2626; font-weight:600; cursor:pointer;">Çıkış Yap</li>
             </ul>
-          </div>
-          <div *ngSwitchCase="'payments'">
-            <h2 class="profile-section-title">ÖDEME YÖNTEMLERİ</h2>
-            <div *ngIf="payments.length === 0">Kayıtlı ödeme yöntemi yok.</div>
-            <ul *ngIf="payments.length > 0">
-              <li *ngFor="let pay of payments">{{pay}}</li>
-            </ul>
-          </div>
-          <div *ngSwitchCase="'wishlist'">
-            <h2 class="profile-section-title">WISHLIST</h2>
-            <div *ngIf="wishlist.length === 0">Listeniz boş.</div>
-            <ul *ngIf="wishlist.length > 0">
-              <li *ngFor="let wish of wishlist">{{wish}}</li>
-            </ul>
-          </div>
-          <div *ngSwitchCase="'faq'">
-            <h2 class="profile-section-title">SSS ve İLETİŞİM</h2>
-            <p>Sıkça sorulan sorular ve iletişim bilgileri buraya gelecek.</p>
-          </div>
-        </ng-container>
-      </section>
+          </nav>
+        </aside>
+        <section class="profile-content-area">
+          <ng-container [ngSwitch]="selectedMenu">
+            <div *ngSwitchCase="'orders'">
+              <h2 class="profile-section-title">SİPARİŞ VE İADELER</h2>
+              <div class="profile-orders-tabs">
+                <button [class.active]="orderTab==='online'" (click)="orderTab='online'">Çevrimiçi</button>
+                <button [class.active]="orderTab==='store'" (click)="orderTab='store'">Mağazada</button>
+                <button [class.active]="orderTab==='returns'" (click)="orderTab='returns'">İadeler</button>
+              </div>
+              <div *ngIf="orders.length === 0" class="profile-empty-orders">
+                <h3>ALIŞVERİŞİNİZ YOK!</h3>
+                <p>Siparişini bulamıyorsan, alışverişi misafir olarak yapmış olabilirsin.</p>
+                <button class="profile-find-order-btn">SİPARİŞİ BUL</button>
+              </div>
+            </div>
+            <div *ngSwitchCase="'info'">
+              <h2 class="profile-section-title">KİŞİSEL BİLGİLER</h2>
+              <div class="profile-info-list">
+                <p><strong>Ad:</strong> {{userData?.firstName}}</p>
+                <p><strong>Soyad:</strong> {{userData?.lastName}}</p>
+                <p><strong>E-posta:</strong> {{userData?.email}}</p>
+                <p><strong>Telefon:</strong> {{userData?.phone}}</p>
+              </div>
+            </div>
+            <div *ngSwitchCase="'addresses'">
+              <h2 class="profile-section-title">ADRESLER</h2>
+              <div *ngIf="addresses.length === 0">Kayıtlı adresiniz yok.</div>
+              <ul *ngIf="addresses.length > 0">
+                <li *ngFor="let addr of addresses">{{addr}}</li>
+              </ul>
+            </div>
+            <div *ngSwitchCase="'payments'">
+              <h2 class="profile-section-title">ÖDEME YÖNTEMLERİ</h2>
+              <div *ngIf="payments.length === 0">Kayıtlı ödeme yöntemi yok.</div>
+              <ul *ngIf="payments.length > 0">
+                <li *ngFor="let pay of payments">{{pay}}</li>
+              </ul>
+            </div>
+            <div *ngSwitchCase="'wishlist'">
+              <h2 class="profile-section-title">WISHLIST</h2>
+              <div *ngIf="wishlist.length === 0">Listeniz boş.</div>
+              <ul *ngIf="wishlist.length > 0">
+                <li *ngFor="let wish of wishlist">{{wish}}</li>
+              </ul>
+            </div>
+            <div *ngSwitchCase="'faq'">
+              <h2 class="profile-section-title">SSS ve İLETİŞİM</h2>
+              <p>Sıkça sorulan sorular ve iletişim bilgileri buraya gelecek.</p>
+            </div>
+          </ng-container>
+        </section>
+      </ng-container>
     </div>
   `,
   styles: [`
@@ -277,20 +304,70 @@ import { FormsModule } from '@angular/forms';
         flex-wrap: wrap;
       }
     }
+    .profile-login-register-box { display: flex; gap: 3rem; justify-content: center; align-items: flex-start; width: 100%; padding: 4rem 0; }
+    .profile-login, .profile-register { background: #fafafa; border-radius: 12px; box-shadow: 0 1px 6px rgba(0,0,0,0.04); padding: 2.5rem 2.5rem; min-width: 320px; max-width: 350px; }
+    .profile-login h2, .profile-register h2 { text-align: center; font-size: 1.3rem; font-weight: bold; margin-bottom: 1.5rem; }
+    .profile-login form, .profile-register form { display: flex; flex-direction: column; gap: 1.2rem; }
+    .profile-login input, .profile-register input { border: none; border-bottom: 2px solid #222; padding: 0.7rem 0.5rem; font-size: 1rem; background: transparent; outline: none; margin-bottom: 0.5rem; }
+    .login-btn, .register-btn { background: #111; color: #fff; border: none; border-radius: 2rem; padding: 0.9rem 0; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 1rem; transition: background 0.2s; }
+    .login-btn:hover, .register-btn:hover { background: #2563eb; }
+    .profile-error { color: #dc2626; margin-top: 1rem; text-align: center; }
   `]
 })
 export class ProfileComponent {
-  user = {
-    firstName: 'Ayşe',
-    lastName: 'Yılmaz',
-    email: 'ayse.yilmaz@example.com',
-    phone: '+90 555 123 4567'
-  };
-  
+  isLoggedIn = false;
+  loginEmail = '';
+  loginPassword = '';
+  loginError = '';
+  registerError = '';
+  userData: any = null;
+  registerData = { firstName: '', lastName: '', email: '', phone: '', password: '' };
   selectedMenu: string = 'orders';
   orderTab: string = 'online';
   orders: any[] = [];
   addresses: string[] = [];
   payments: string[] = [];
   wishlist: string[] = [];
+
+  ngOnInit() {
+    const user = localStorage.getItem('demoUser');
+    if (user) {
+      this.userData = JSON.parse(user);
+      this.isLoggedIn = true;
+    }
+  }
+
+  login() {
+    const user = localStorage.getItem('demoUser');
+    if (user) {
+      const u = JSON.parse(user);
+      if (u.email === this.loginEmail && u.password === this.loginPassword) {
+        this.userData = u;
+        this.isLoggedIn = true;
+        this.loginError = '';
+      } else {
+        this.loginError = 'E-posta veya parola hatalı!';
+      }
+    } else {
+      this.loginError = 'Kayıtlı kullanıcı bulunamadı!';
+    }
+  }
+
+  register() {
+    if (!this.registerData.firstName || !this.registerData.lastName || !this.registerData.email || !this.registerData.phone || !this.registerData.password) {
+      this.registerError = 'Tüm alanları doldurun!';
+      return;
+    }
+    localStorage.setItem('demoUser', JSON.stringify(this.registerData));
+    this.userData = this.registerData;
+    this.isLoggedIn = true;
+    this.registerError = '';
+  }
+
+  logout() {
+    this.isLoggedIn = false;
+    this.userData = null;
+    this.loginEmail = '';
+    this.loginPassword = '';
+  }
 } 
