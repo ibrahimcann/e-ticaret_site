@@ -1,8 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
+  imports: [RouterModule],
   template: `
     <div class="stradivarius-home">
       <!-- Banner/Slider -->
@@ -23,30 +25,30 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
       <section class="category-section">
         <h2 class="category-title">SEÇİLİ ÜRÜNLERDE -%40'A VARAN İNDİRİM</h2>
         <div class="category-grid">
-          <div class="category-card">
+          <a [routerLink]="['/products']" [queryParams]="{category: 'tshirt'}" class="category-card">
             <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="T-shirt">
             <span class="category-label">T-SHIRT</span>
-          </div>
-          <div class="category-card">
+          </a>
+          <a [routerLink]="['/products']" [queryParams]="{category: 'pants'}" class="category-card">
             <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Pantolon">
             <span class="category-label">PANTOLON</span>
-          </div>
-          <div class="category-card">
+          </a>
+          <a [routerLink]="['/products']" [queryParams]="{category: 'shirt'}" class="category-card">
             <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Gömlek">
             <span class="category-label">GÖMLEK</span>
-          </div>
-          <div class="category-card">
+          </a>
+          <a [routerLink]="['/products']" [queryParams]="{category: 'dress'}" class="category-card">
             <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7b29?auto=format&fit=crop&w=400&q=80" alt="Elbise">
             <span class="category-label">ELBİSE</span>
-          </div>
-          <div class="category-card">
+          </a>
+          <a [routerLink]="['/products']" [queryParams]="{category: 'accessories'}" class="category-card">
             <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=400&q=80" alt="At">
             <span class="category-label">AT</span>
-          </div>
-          <div class="category-card">
+          </a>
+          <a [routerLink]="['/products']" [queryParams]="{category: 'shoes'}" class="category-card">
             <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Ayakkabı">
             <span class="category-label">AYAKKABI</span>
-          </div>
+          </a>
         </div>
       </section>
 
@@ -57,71 +59,81 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
           <button class="recommend-arrow left" (click)="scrollRecommend(-1)">&#10094;</button>
           <div class="recommend-row" #recommendRow>
             <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Bantlı düz terlik">
-              <div class="recommend-info">
-                <div class="color-dots">
-                  <span class="dot" style="background:#f5f5f5"></span>
-                  <span class="dot" style="background:#c2bdb6"></span>
+              <a [routerLink]="['/products', '1']" class="recommend-link">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&q=80" alt="Bantlı düz terlik">
+                <div class="recommend-info">
+                  <div class="color-dots">
+                    <span class="dot" style="background:#f5f5f5"></span>
+                    <span class="dot" style="background:#c2bdb6"></span>
+                  </div>
+                  <div class="recommend-name">Bantlı düz terlik</div>
+                  <div class="recommend-prices">
+                    <span class="price">890,00 TL</span>
+                    <span class="discount">-35%</span>
+                    <span class="old-price">1.390,00 TL</span>
+                  </div>
                 </div>
-                <div class="recommend-name">Bantlı düz terlik</div>
-                <div class="recommend-prices">
-                  <span class="price">890,00 TL</span>
-                  <span class="discount">-35%</span>
-                  <span class="old-price">1.390,00 TL</span>
-                </div>
-              </div>
+              </a>
             </div>
             <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Tokalı düz terlik">
-              <div class="recommend-info">
-                <div class="recommend-name">Tokalı düz terlik</div>
-                <div class="recommend-prices">
-                  <span class="price">1.090,00 TL</span>
-                  <span class="discount">-15%</span>
-                  <span class="old-price">1.290,00 TL</span>
+              <a [routerLink]="['/products', '2']" class="recommend-link">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="Tokalı düz terlik">
+                <div class="recommend-info">
+                  <div class="recommend-name">Tokalı düz terlik</div>
+                  <div class="recommend-prices">
+                    <span class="price">1.090,00 TL</span>
+                    <span class="discount">-15%</span>
+                    <span class="old-price">1.290,00 TL</span>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
             <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Bantlı düz terlik">
-              <div class="recommend-info">
-                <div class="color-dots">
-                  <span class="dot" style="background:#f5f5f5"></span>
-                  <span class="dot" style="background:#4b2e1e"></span>
+              <a [routerLink]="['/products', '3']" class="recommend-link">
+                <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=400&q=80" alt="Bantlı düz terlik">
+                <div class="recommend-info">
+                  <div class="color-dots">
+                    <span class="dot" style="background:#f5f5f5"></span>
+                    <span class="dot" style="background:#4b2e1e"></span>
+                  </div>
+                  <div class="recommend-name">Bantlı düz terlik</div>
+                  <div class="recommend-prices">
+                    <span class="price">890,00 TL</span>
+                    <span class="discount">-35%</span>
+                    <span class="old-price">1.390,00 TL</span>
+                  </div>
                 </div>
-                <div class="recommend-name">Bantlı düz terlik</div>
-                <div class="recommend-prices">
-                  <span class="price">890,00 TL</span>
-                  <span class="discount">-35%</span>
-                  <span class="old-price">1.390,00 TL</span>
-                </div>
-              </div>
+              </a>
             </div>
             <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7b29?auto=format&fit=crop&w=400&q=80" alt="Straight fit jean">
-              <div class="recommend-info">
-                <div class="color-dots">
-                  <span class="dot" style="background:#bfc8d1"></span>
-                  <span class="dot" style="background:#e0e4e8"></span>
+              <a [routerLink]="['/products', '4']" class="recommend-link">
+                <img src="https://images.unsplash.com/photo-1469398715555-76331a6c7b29?auto=format&fit=crop&w=400&q=80" alt="Straight fit jean">
+                <div class="recommend-info">
+                  <div class="color-dots">
+                    <span class="dot" style="background:#bfc8d1"></span>
+                    <span class="dot" style="background:#e0e4e8"></span>
+                  </div>
+                  <div class="recommend-name">Straight fit jean</div>
+                  <div class="recommend-prices">
+                    <span class="price">920,00 TL</span>
+                    <span class="discount">-38%</span>
+                    <span class="old-price">1.490,00 TL</span>
+                  </div>
                 </div>
-                <div class="recommend-name">Straight fit jean</div>
-                <div class="recommend-prices">
-                  <span class="price">920,00 TL</span>
-                  <span class="discount">-38%</span>
-                  <span class="old-price">1.490,00 TL</span>
-                </div>
-              </div>
+              </a>
             </div>
             <div class="recommend-card">
-              <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Dökümlü halter top">
-              <div class="recommend-info">
-                <div class="recommend-name">Dökümlü halter top</div>
-                <div class="recommend-prices">
-                  <span class="price">590,00 TL</span>
-                  <span class="discount">-45%</span>
-                  <span class="old-price">1.090,00 TL</span>
+              <a [routerLink]="['/products', '5']" class="recommend-link">
+                <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=400&q=80" alt="Dökümlü halter top">
+                <div class="recommend-info">
+                  <div class="recommend-name">Dökümlü halter top</div>
+                  <div class="recommend-prices">
+                    <span class="price">590,00 TL</span>
+                    <span class="discount">-45%</span>
+                    <span class="old-price">1.090,00 TL</span>
+                  </div>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
           <button class="recommend-arrow right" (click)="scrollRecommend(1)">&#10095;</button>
@@ -462,6 +474,25 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
       border-radius: 50%;
       border: 1.5px solid #eee;
       display: inline-block;
+    }
+    .recommend-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s;
+    }
+    
+    .recommend-link:hover {
+      transform: translateY(-5px);
+    }
+    
+    .category-card {
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    
+    .category-card:hover {
+      transform: translateY(-5px);
     }
     @media (max-width: 900px) {
       .banner-car { left: 0; width: 90vw; }

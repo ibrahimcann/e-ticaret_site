@@ -17,10 +17,9 @@ import { Cart } from '../shared/models/order.model';
         <nav class="main-nav">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="main-nav-link">Anasayfa</a>
           <a routerLink="/products" routerLinkActive="active" class="main-nav-link">Ürünler</a>
-          <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2.5 3H5l2.68 13.39A2 2 0 0 0 9.62 18h7.76a2 2 0 0 0 1.94-1.61L21.5 6H6"/></svg>
-            Sepet
-          </a>
+          <a routerLink="/cart" routerLinkActive="active" class="main-nav-link">🛒 Sepet <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span></a>
+          <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">{{ localizationService.t('nav.login') }}</a>
+          <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">{{ localizationService.t('nav.register') }}</a>
           <a routerLink="/profile" routerLinkActive="active" class="main-nav-link">👤 Profil</a>
         </nav>
       </div>
@@ -28,7 +27,9 @@ import { Cart } from '../shared/models/order.model';
         <nav class="offcanvas-nav">
           <a routerLink="/" routerLinkActive="active" class="offcanvas-link">Anasayfa</a>
           <a routerLink="/products" routerLinkActive="active" class="offcanvas-link">Ürünler</a>
-          <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepet</a>
+          <a routerLink="/cart" routerLinkActive="active" class="offcanvas-link">🛒 Sepetim</a>
+          <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">{{ localizationService.t('nav.login') }}</a>
+          <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">{{ localizationService.t('nav.register') }}</a>
           <a routerLink="/profile" routerLinkActive="active" class="offcanvas-link">👤 Profil</a>
         </nav>
       </div>

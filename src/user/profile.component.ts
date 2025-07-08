@@ -63,7 +63,7 @@ import { FormsModule } from '@angular/forms';
             <button type="button" class="show-hide-btn" (click)="togglePassword()">{{ showPassword ? 'Gizle' : 'Göster' }}</button>
           </p>
           <div class="change-password-link">
-            <a href="#" (click)="showChangePassword = true">Şifreyi değiştir</a>
+            <a href="#" (click)="showChangePassword = true" style="text-decoration: none;">Şifreyi değiştir</a>
           </div>
         </div>
         <div class="profile-actions">
