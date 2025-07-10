@@ -2,11 +2,39 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../shared/services/data.service';
 import { LocalizationService } from '../shared/services/localization.service';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexTitleSubtitle,
+  ApexDataLabels,
+  ApexLegend,
+  ApexResponsive,
+  ApexNonAxisChartSeries
+} from 'ng-apexcharts';
+
+export type BarChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  title: ApexTitleSubtitle;
+  dataLabels: ApexDataLabels;
+};
+
+export type DonutChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  labels: string[];
+  legend: ApexLegend;
+  responsive: ApexResponsive[];
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgApexchartsModule],
   template: `
     <div class="dashboard">
       <h1>{{ localizationService.t('admin.dashboard') }}</h1>
@@ -45,6 +73,27 @@ import { LocalizationService } from '../shared/services/localization.service';
         </div>
       </div>
       
+      <div class="dashboard-graphs">
+        <div class="card graph-card">
+          <apx-chart
+            [series]="barChartOptions.series"
+            [chart]="barChartOptions.chart"
+            [xaxis]="barChartOptions.xaxis"
+            [title]="barChartOptions.title"
+            [dataLabels]="barChartOptions.dataLabels">
+          </apx-chart>
+        </div>
+        <div class="card graph-card">
+          <apx-chart
+            [series]="donutChartOptions.series"
+            [chart]="donutChartOptions.chart"
+            [labels]="donutChartOptions.labels"
+            [legend]="donutChartOptions.legend"
+            [responsive]="donutChartOptions.responsive"
+            [title]="donutChartOptions.title">
+          </apx-chart>
+        </div>
+      </div>
       <div class="recent-section">
         <div class="card">
           <h2>Recent Activity</h2>
@@ -120,6 +169,41 @@ import { LocalizationService } from '../shared/services/localization.service';
       color: #6b7280;
       font-size: 0.875rem;
     }
+    
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .dashboard-graphs {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .graph-card {
+      flex: 1 1 0;
+      min-width: 0;
+      /* min-height: 600px; */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: auto;
+      padding: 1.5rem 1rem;
+    }
+    .card {
+      padding: 1.5rem 1rem;
+    }
+    .centered-canvas {
+      display: block;
+      margin: auto;
+      max-width: 100% !important;
+      max-height: 100% !important;
+    }
   `]
 })
 export class AdminDashboardComponent implements OnInit {
@@ -128,6 +212,31 @@ export class AdminDashboardComponent implements OnInit {
     users: 0,
     orders: 0,
     blogPosts: 0
+  };
+
+  public barChartOptions: BarChartOptions = {
+    series: [{ name: 'Siparişler', data: [] }],
+    chart: { type: 'bar', height: 400 },
+    xaxis: { categories: [] },
+    title: { text: 'Son 10 Gün Sipariş Grafiği' },
+    dataLabels: { enabled: false }
+  };
+
+  public donutChartOptions: DonutChartOptions = {
+    series: [],
+    chart: { type: 'donut', height: 400 },
+    labels: ['Tek Çekim', 'Taksitli Kredi Kartı', 'Kapıda Ödeme', 'Havale/EFT'],
+    legend: { position: 'top' },
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: { width: 300 },
+          legend: { position: 'bottom' }
+        }
+      }
+    ],
+    title: { text: 'Ödeme Tipine Göre Siparişler' }
   };
 
   constructor(
@@ -139,13 +248,35 @@ export class AdminDashboardComponent implements OnInit {
     this.dataService.getProducts().subscribe(products => {
       this.stats.products = products.length;
     });
-    
     this.dataService.getBlogPosts().subscribe(posts => {
       this.stats.blogPosts = posts.length;
     });
-    
-    // Mock data for users and orders
     this.stats.users = 156;
     this.stats.orders = 89;
+
+    // SABİT (MOCK) VERİ İLE GRAFİKLERİ DOLDUR
+    this.barChartOptions = {
+      series: [{ name: 'Siparişler', data: [2, 1, 3, 0, 4, 2, 1, 5, 3, 2] }],
+      chart: { type: 'bar', height: 400 },
+      xaxis: { categories: ['2025-06-29','2025-06-30','2025-07-01','2025-07-02','2025-07-03','2025-07-04','2025-07-05','2025-07-06','2025-07-07','2025-07-08'] },
+      title: { text: 'Son 10 Gün Sipariş Grafiği' },
+      dataLabels: { enabled: false }
+    };
+    this.donutChartOptions = {
+      series: [5, 3, 2, 4],
+      chart: { type: 'donut', height: 400 },
+      labels: ['Tek Çekim', 'Taksitli Kredi Kartı', 'Kapıda Ödeme', 'Havale/EFT'],
+      legend: { position: 'top' },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: { width: 300 },
+            legend: { position: 'bottom' }
+          }
+        }
+      ],
+      title: { text: 'Ödeme Tipine Göre Siparişler' }
+    };
   }
 }

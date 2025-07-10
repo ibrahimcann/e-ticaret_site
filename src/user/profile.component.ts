@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { SupabaseService } from '../app/supabase.service';
+import { User, UserProfile } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -23,11 +25,11 @@ import { FormsModule } from '@angular/forms';
         <div class="profile-register">
             <h2>HESAP OLUŞTUR</h2>
             <form (ngSubmit)="register()" #registerForm="ngForm">
-          <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
-          <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
-          <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
-          <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
-          <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
+              <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
+              <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
+              <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
+              <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
+              <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
               <button type="submit" class="register-btn">KAYIT OL</button>
               <div *ngIf="registerError" class="profile-error">{{registerError}}</div>
         </form>
@@ -36,10 +38,10 @@ import { FormsModule } from '@angular/forms';
       </ng-container>
       <ng-container *ngIf="isLoggedIn">
         <aside class="profile-sidebar">
-          <div class="profile-userbox">
-            <img class="profile-avatar" src="https://randomuser.me/api/portraits/women/65.jpg" alt="Profil Fotoğrafı">
-            <div class="profile-hello">Merhaba, <span class="profile-username">{{userData?.firstName}}</span></div>
-          </div>
+                      <div class="profile-userbox">
+              <img class="profile-avatar" [src]="userData?.avatar || 'https://randomuser.me/api/portraits/women/65.jpg'" alt="Profil Fotoğrafı">
+              <div class="profile-hello">Merhaba, <span class="profile-username">{{userData?.name}}</span></div>
+            </div>
           <nav class="profile-menu">
             <ul>
               <li [class.active]="selectedMenu==='orders'" (click)="selectedMenu='orders'">
@@ -314,13 +316,14 @@ import { FormsModule } from '@angular/forms';
     .profile-error { color: #dc2626; margin-top: 1rem; text-align: center; }
   `]
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   isLoggedIn = false;
+  isLoading = false;
   loginEmail = '';
   loginPassword = '';
   loginError = '';
   registerError = '';
-  userData: any = null;
+  userData: User | null = null;
   registerData = { firstName: '', lastName: '', email: '', phone: '', password: '' };
   selectedMenu: string = 'orders';
   orderTab: string = 'online';
@@ -329,45 +332,155 @@ export class ProfileComponent {
   payments: string[] = [];
   wishlist: string[] = [];
 
-  ngOnInit() {
-    const user = localStorage.getItem('demoUser');
-    if (user) {
-      this.userData = JSON.parse(user);
+  constructor(
+    private supabaseService: SupabaseService,
+    private router: Router
+  ) {}
+
+  async ngOnInit() {
+    // Oturum kontrolü
+    const session = await this.supabaseService.client.auth.getSession();
+    
+    if (session.data.session) {
       this.isLoggedIn = true;
+      await this.loadUserData(session.data.session.user.id);
     }
-  }
 
-  login() {
-    const user = localStorage.getItem('demoUser');
-    if (user) {
-      const u = JSON.parse(user);
-      if (u.email === this.loginEmail && u.password === this.loginPassword) {
-        this.userData = u;
+    // Oturum değişikliklerini dinle
+    this.supabaseService.client.auth.onAuthStateChange(async (event: string, session: any) => {
+      if (event === 'SIGNED_IN' && session) {
         this.isLoggedIn = true;
-        this.loginError = '';
-      } else {
-        this.loginError = 'E-posta veya parola hatalı!';
+        await this.loadUserData(session.user.id);
+      } else if (event === 'SIGNED_OUT') {
+        this.isLoggedIn = false;
+        this.userData = null;
       }
-    } else {
-      this.loginError = 'Kayıtlı kullanıcı bulunamadı!';
+    });
+  }
+
+  async loadUserData(userId: string) {
+    try {
+      // Kullanıcı bilgilerini users tablosundan çek
+      const { data: userData, error: userError } = await this.supabaseService.client
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+        .single();
+
+      if (userError) throw userError;
+      this.userData = userData;
+
+      // Siparişleri çek
+      const { data: orderData, error: orderError } = await this.supabaseService.client
+        .from('orders')
+        .select('*')
+        .eq('userId', userId);
+
+      if (orderError) throw orderError;
+      this.orders = orderData || [];
+
+    } catch (error: any) {
+      console.error('Kullanıcı bilgileri yüklenirken hata:', error.message);
     }
   }
 
-  register() {
-    if (!this.registerData.firstName || !this.registerData.lastName || !this.registerData.email || !this.registerData.phone || !this.registerData.password) {
-      this.registerError = 'Tüm alanları doldurun!';
+  async login() {
+    if (!this.loginEmail || !this.loginPassword) {
+      this.loginError = 'E-posta ve parola gereklidir!';
       return;
     }
-    localStorage.setItem('demoUser', JSON.stringify(this.registerData));
-    this.userData = this.registerData;
-    this.isLoggedIn = true;
-    this.registerError = '';
+
+    try {
+      this.isLoading = true;
+      this.loginError = '';
+      
+      const { data, error } = await this.supabaseService.client.auth.signInWithPassword({
+        email: this.loginEmail,
+        password: this.loginPassword
+      });
+
+      if (error) throw error;
+      
+      // Başarılı giriş
+      this.isLoggedIn = true;
+      
+      // Kullanıcı bilgilerini yükle
+      if (data.user) {
+        await this.loadUserData(data.user.id);
+      }
+      
+    } catch (error: any) {
+      this.loginError = error.message || 'Giriş yapılırken bir hata oluştu';
+      console.error('Giriş hatası:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  logout() {
-    this.isLoggedIn = false;
-    this.userData = null;
-    this.loginEmail = '';
-    this.loginPassword = '';
+  async register() {
+    if (!this.registerData.firstName || !this.registerData.lastName || 
+        !this.registerData.email || !this.registerData.password) {
+      this.registerError = 'Lütfen gerekli tüm alanları doldurun!';
+      return;
+    }
+
+    try {
+      this.isLoading = true;
+      this.registerError = '';
+      
+      // 1. Supabase Auth ile kullanıcı oluştur
+      const { data: authData, error: authError } = await this.supabaseService.client.auth.signUp({
+        email: this.registerData.email,
+        password: this.registerData.password,
+        options: {
+          data: {
+            firstName: this.registerData.firstName,
+            lastName: this.registerData.lastName
+          }
+        }
+      });
+
+      if (authError) throw authError;
+      
+      if (!authData.user) {
+        throw new Error('Kullanıcı oluşturulamadı');
+      }
+      
+                    // 2. Users tablosuna kullanıcı bilgilerini ekle
+       const { error: userError } = await this.supabaseService.client
+         .from('users')
+         .insert({
+           id: authData.user.id,
+           email: this.registerData.email,
+           name: this.registerData.firstName, 
+           surname: this.registerData.lastName, 
+           phone: this.registerData.phone,
+           role: 'user',
+           isactive: true
+         });
+       
+       if (userError) throw userError;
+      
+      // Başarılı kayıt
+      this.isLoggedIn = true;
+      await this.loadUserData(authData.user.id);
+      
+    } catch (error: any) {
+      this.registerError = error.message || 'Kayıt olurken bir hata oluştu';
+      console.error('Kayıt hatası:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async logout() {
+    try {
+      await this.supabaseService.client.auth.signOut();
+      this.isLoggedIn = false;
+      this.userData = null;
+      this.router.navigate(['/']);
+    } catch (error: any) {
+      console.error('Çıkış yapılırken hata:', error.message);
+    }
   }
 } 

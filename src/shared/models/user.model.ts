@@ -1,11 +1,11 @@
 export interface User {
   id: string;
   email: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  surname: string;
+  phone?: string;
   role: UserRole;
   isActive: boolean;
-  createdAt: Date;
   avatar?: string;
 }
 
@@ -17,7 +17,6 @@ export enum UserRole {
 export interface UserProfile {
   id: string;
   userId: string;
-  phone?: string;
   address?: string;
   city?: string;
   country?: string;

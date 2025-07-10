@@ -39,6 +39,15 @@ import { LanguageSelectorComponent } from '../shared/components/language-selecto
           <a routerLink="/admin/pages" routerLinkActive="active" class="admin-nav-item">
             📄 {{ localizationService.t('admin.pages') }}
           </a>
+          <a routerLink="/admin/favorites" routerLinkActive="active" class="admin-nav-item">
+            ⭐ {{ localizationService.t('admin.favorites') }}
+          </a>
+          <a routerLink="/admin/notifications" routerLinkActive="active" class="admin-nav-item">
+            🔔 {{ localizationService.t('admin.notifications') }}
+          </a>
+          <a routerLink="/admin/returns" routerLinkActive="active" class="admin-nav-item">
+            🔄 İade / Değişim
+          </a>
         </nav>
         <div class="admin-footer">
           <app-language-selector></app-language-selector>
