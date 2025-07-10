@@ -44,7 +44,7 @@ import { RouterModule } from '@angular/router';
           </div>
           <div class="category-card">
             <img src="https://i.imgur.com/3Qf6Q2v.png" alt="Denizatı" />
-            <span class="category-label">DENİZATI</span>
+            <span class="category-label">AKSESUAR</span>
           </div>
           <div class="category-card">
             <img src="https://i.imgur.com/4Qf6Q2v.png" alt="Terlik" />

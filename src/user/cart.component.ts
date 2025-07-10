@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { DataService } from '../shared/services/data.service';
 import { Cart, CartItem } from '../shared/models/order.model';
 
@@ -61,7 +61,7 @@ import { Cart, CartItem } from '../shared/models/order.model';
           <span>TOPLAM <span class="tax-info">Vergiler dahil</span></span>
           <span>{{ cart?.total | currency:'TRY':'symbol':'1.2-2':'tr' }}</span>
         </div>
-        <button class="checkout-btn">SİPARİŞİ İŞLEME KOY</button>
+        <button class="checkout-btn" (click)="goToCheckout()">SİPARİŞİ İŞLEME KOY</button>
         <div class="info">
           <span class="icon">&#9888;</span> Ürünler rezerve edilmedi. Tükenme riskini alma!
         </div>
@@ -285,7 +285,8 @@ export class CartComponent implements OnInit {
   cart: Cart | null = null;
 
   constructor(
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -313,5 +314,9 @@ export class CartComponent implements OnInit {
     if (this.cart) {
       this.cart.total = this.cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     }
+  }
+
+  goToCheckout() {
+    this.router.navigate(['/checkout']);
   }
 }
