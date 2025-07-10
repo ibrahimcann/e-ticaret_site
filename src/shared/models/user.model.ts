@@ -7,6 +7,10 @@ export interface User {
   role: UserRole;
   isActive: boolean;
   avatar?: string;
+  /** Kullanıcının adı */
+  firstName?: string;
+  /** Kullanıcının soyadı */
+  lastName?: string;
 }
 
 export enum UserRole {
