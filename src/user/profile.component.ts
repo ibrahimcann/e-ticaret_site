@@ -11,27 +11,27 @@ import { FormsModule } from '@angular/forms';
     <div class="profile-main-layout">
       <ng-container *ngIf="!isLoggedIn">
         <div class="profile-login-register-box">
-          <div class="profile-login">
+        <div class="profile-login">
             <h2>GİRİŞ YAP</h2>
-            <form (ngSubmit)="login()" #loginForm="ngForm">
-              <input type="email" placeholder="E-posta adresinizi girin" required [(ngModel)]="loginEmail" name="loginEmail" />
-              <input type="password" placeholder="Parola" required [(ngModel)]="loginPassword" name="loginPassword" />
+          <form (ngSubmit)="login()" #loginForm="ngForm">
+            <input type="email" placeholder="E-posta adresinizi girin" required [(ngModel)]="loginEmail" name="loginEmail" />
+            <input type="password" placeholder="Parola" required [(ngModel)]="loginPassword" name="loginPassword" />
               <button type="submit" class="login-btn">GİRİŞ YAP</button>
               <div *ngIf="loginError" class="profile-error">{{loginError}}</div>
-            </form>
-          </div>
-          <div class="profile-register">
+          </form>
+        </div>
+        <div class="profile-register">
             <h2>HESAP OLUŞTUR</h2>
             <form (ngSubmit)="register()" #registerForm="ngForm">
-              <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
-              <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
-              <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
-              <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
-              <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
+          <input type="text" placeholder="Ad" required [(ngModel)]="registerData.firstName" name="firstName" />
+          <input type="text" placeholder="Soyad" required [(ngModel)]="registerData.lastName" name="lastName" />
+          <input type="email" placeholder="E-posta" required [(ngModel)]="registerData.email" name="email" />
+          <input type="tel" placeholder="Telefon Numarası" required [(ngModel)]="registerData.phone" name="phone" />
+          <input type="password" placeholder="Parola" required [(ngModel)]="registerData.password" name="password" />
               <button type="submit" class="register-btn">KAYIT OL</button>
               <div *ngIf="registerError" class="profile-error">{{registerError}}</div>
-            </form>
-          </div>
+        </form>
+      </div>
         </div>
       </ng-container>
       <ng-container *ngIf="isLoggedIn">
@@ -82,37 +82,37 @@ import { FormsModule } from '@angular/forms';
             <div *ngSwitchCase="'info'">
               <h2 class="profile-section-title">KİŞİSEL BİLGİLER</h2>
               <div class="profile-info-list">
-                <p><strong>Ad:</strong> {{userData?.firstName}}</p>
-                <p><strong>Soyad:</strong> {{userData?.lastName}}</p>
-                <p><strong>E-posta:</strong> {{userData?.email}}</p>
-                <p><strong>Telefon:</strong> {{userData?.phone}}</p>
-              </div>
-            </div>
+          <p><strong>Ad:</strong> {{userData?.firstName}}</p>
+          <p><strong>Soyad:</strong> {{userData?.lastName}}</p>
+          <p><strong>E-posta:</strong> {{userData?.email}}</p>
+          <p><strong>Telefon:</strong> {{userData?.phone}}</p>
+          </div>
+        </div>
             <div *ngSwitchCase="'addresses'">
               <h2 class="profile-section-title">ADRESLER</h2>
               <div *ngIf="addresses.length === 0">Kayıtlı adresiniz yok.</div>
               <ul *ngIf="addresses.length > 0">
                 <li *ngFor="let addr of addresses">{{addr}}</li>
               </ul>
-            </div>
+        </div>
             <div *ngSwitchCase="'payments'">
               <h2 class="profile-section-title">ÖDEME YÖNTEMLERİ</h2>
               <div *ngIf="payments.length === 0">Kayıtlı ödeme yöntemi yok.</div>
               <ul *ngIf="payments.length > 0">
                 <li *ngFor="let pay of payments">{{pay}}</li>
               </ul>
-            </div>
+      </div>
             <div *ngSwitchCase="'wishlist'">
               <h2 class="profile-section-title">WISHLIST</h2>
               <div *ngIf="wishlist.length === 0">Listeniz boş.</div>
               <ul *ngIf="wishlist.length > 0">
                 <li *ngFor="let wish of wishlist">{{wish}}</li>
               </ul>
-            </div>
+      </div>
             <div *ngSwitchCase="'faq'">
               <h2 class="profile-section-title">SSS ve İLETİŞİM</h2>
               <p>Sıkça sorulan sorular ve iletişim bilgileri buraya gelecek.</p>
-            </div>
+          </div>
           </ng-container>
         </section>
       </ng-container>
