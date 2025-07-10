@@ -21,27 +21,43 @@ import { filter } from 'rxjs/operators';
           </button>
           <span class="logo" *ngIf="isHomePage"><h2>🛍️ MY APP</h2></span>
         </div>
-        <div class="search-box" *ngIf="isHomePage">
-          <input type="text" placeholder="Ne aramak istersin?" class="search-input">
-          <button class="search-button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
+        <div class="search-icons-container" *ngIf="isHomePage">
+          <div class="search-box">
+            <input type="text" placeholder="Ne aramak istersin?" class="search-input">
+            <button class="search-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="search-icons">
+            <button class="icon-btn" (click)="goToProfile()"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg></button>
+            <button class="icon-btn" (click)="goToFavorites()"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0l-.9 1-.9-1A5.5 5.5 0 0 0 3.4 12l8.6 8.6 8.6-8.6a5.5 5.5 0 0 0 0-7.8z"/></svg></button>
+            <button class="icon-btn" (click)="goToCart()"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2.5 3H5l2.68 13.39A2 2 0 0 0 9.62 18h7.76a2 2 0 0 0 1.94-1.61L21.5 6H6"/></svg></button>
+          </div>
         </div>
         <div class="menu-content" *ngIf="menuOpen">
           <div class="menu-header">
             <button class="close-btn" (click)="toggleMenu()">✕</button>
+            <span class="menu-logo">MY APP</span>
+          </div>
+          <div class="menu-search">
+            <input type="text" placeholder="Ne aramak istersin?" class="menu-search-input">
+            <button class="menu-search-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            </button>
           </div>
           <nav class="menu-nav">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="menu-link" (click)="toggleMenu()">Anasayfa</a>
-            <a routerLink="/products" routerLinkActive="active" class="menu-link" (click)="toggleMenu()">Ürünler</a>
-            <a routerLink="/cart" routerLinkActive="active" class="menu-link" (click)="toggleMenu()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><circle cx="9" cy="21" r="1.5"/><circle cx="18" cy="21" r="1.5"/><path d="M2.5 3H5l2.68 13.39A2 2 0 0 0 9.62 18h7.76a2 2 0 0 0 1.94-1.61L21.5 6H6"/></svg>
-              Sepet
-            </a>
-            <a routerLink="/profile" routerLinkActive="active" class="menu-link" (click)="toggleMenu()">👤 Profil</a>
+            <a class="menu-link red">İNDİRİM</a>
+            <a class="menu-link">YENİ</a>
+            <a class="menu-link">KETEN KARIŞIMLI</a>
+            <a class="menu-link">GİYİM</a>
+            <a class="menu-link">STR TEEN <span class="new-badge">NEW</span></a>
+            <a class="menu-link">CASUAL SPOR</a>
+            <a class="menu-link">AYAKKABI</a>
+            <a class="menu-link">AKSESUAR</a>
+            <a class="menu-link">ÇANTA</a>
           </nav>
         </div>
       </div>
@@ -135,16 +151,36 @@ import { filter } from 'rxjs/operators';
       color: #2563eb;
     }
     
+    .search-icons-container {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      flex-direction: row;
+    }
     .search-box {
       display: flex;
       align-items: center;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50px;
-      padding: 5px 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 25px;
+      padding: 5px 18px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
       width: 250px;
     }
-    
+    .search-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
     .search-input {
       flex: 1;
       border: none;
@@ -154,7 +190,6 @@ import { filter } from 'rxjs/operators';
       color: #333;
       outline: none;
     }
-    
     .search-button {
       background: none;
       border: none;
@@ -170,107 +205,95 @@ import { filter } from 'rxjs/operators';
       position: fixed;
       top: 0;
       left: 0;
-      width: 300px;
+      width: 350px;
       height: 100vh;
-      background-color: #fff;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-      animation: slideIn 0.3s ease-out;
+      background: #fff;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      padding: 30px 30px 0 30px;
+      z-index: 2000;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
     }
-    
-    @keyframes slideIn {
-      from { transform: translateX(-100%); }
-      to { transform: translateX(0); }
-    }
-    
+
     .menu-header {
       display: flex;
-      justify-content: flex-end;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 30px;
     }
-    
+
+    .menu-logo {
+      font-family: 'Georgia', serif;
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+
+    .menu-search {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+
+    .menu-search-input {
+      flex: 1;
+      border: none;
+      font-size: 1.1rem;
+      outline: none;
+      background: transparent;
+    }
+
+    .menu-search-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .menu-link {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #111;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .menu-link.red {
+      color: #e60023;
+    }
+
+    .new-badge {
+      background: #111;
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 2px 6px;
+      border-radius: 8px;
+      margin-left: 6px;
+      font-weight: normal;
+    }
+
     .close-btn {
       background: none;
       border: none;
       font-size: 24px;
       cursor: pointer;
       padding: 5px;
+      outline: none;
+      box-shadow: none;
     }
-    
-    .menu-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .menu-link {
-      color: #000;
-      font-size: 1.2rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 0;
-    }
-    
-    .menu-link.active, .menu-link:hover {
-      color: #2563eb;
-    }
-    
-    .user-footer {
-      background-color: #1f2937;
-      color: white;
-      padding: 2rem 0 1rem;
-      margin-top: 4rem;
-    }
-    
-    .footer-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-    
-    .footer-section h4 {
-      margin-bottom: 1rem;
-      color: white;
-    }
-    
-    .footer-section ul {
-      list-style: none;
-      padding: 0;
-    }
-    
-    .footer-section ul li {
-      margin-bottom: 0.5rem;
-    }
-    
-    .footer-section ul li a {
-      color: #d1d5db;
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    
-    .footer-section ul li a:hover {
-      color: white;
-    }
-    
-    .footer-bottom {
-      border-top: 1px solid #374151;
-      padding-top: 1rem;
-      text-align: center;
-      color: #d1d5db;
-    }
-    
+
     @media (max-width: 768px) {
       .menu-content {
         width: 100%;
-      }
-      
-      .search-box {
-        width: 180px;
+        padding: 20px 10px 0 10px;
       }
     }
   `]
@@ -304,5 +327,17 @@ export class UserLayoutComponent implements OnInit {
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile']);
+  }
+
+  goToFavorites() {
+    this.router.navigate(['/favorites']);
+  }
+
+  goToCart() {
+    this.router.navigate(['/cart']);
   }
 }

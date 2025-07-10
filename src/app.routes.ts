@@ -41,6 +41,10 @@ export const routes: Routes = [
       {
         path: 'checkout',
         loadComponent: () => import('./user/checkout.component').then(m => m.CheckoutComponent)
+      },
+      {
+        path: 'favorites',
+        loadComponent: () => import('./user/favorites.component').then(m => m.FavoritesComponent)
       }
     ]
   },
@@ -88,7 +92,7 @@ export const routes: Routes = [
       },
       {
         path: 'favorites',
-        loadComponent: () => import('./admin/favorites.component').then(m => m.FavoritesComponent)
+        loadComponent: () => import('./user/favorites.component').then(m => m.FavoritesComponent)
       },
       {
         path: 'notifications',
