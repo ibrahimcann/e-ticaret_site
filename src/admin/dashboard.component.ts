@@ -204,6 +204,16 @@ export type DonutChartOptions = {
       max-width: 100% !important;
       max-height: 100% !important;
     }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 260px; /* sidebar genişliğiniz neyse */
+      background: #232c3d; /* kendi renginiz */
+      overflow-y: auto;
+      z-index: 1000;
+    }
   `]
 })
 export class AdminDashboardComponent implements OnInit {

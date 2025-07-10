@@ -37,10 +37,6 @@ export const routes: Routes = [
       {
         path: 'profile',
         loadComponent: () => import('./user/profile.component').then(m => m.ProfileComponent)
-      },
-      {
-        path: 'checkout',
-        loadComponent: () => import('./user/checkout.component').then(m => m.CheckoutComponent)
       }
     ]
   },
@@ -95,8 +91,8 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/notifications.component').then(m => m.NotificationsComponent)
       },
       {
-        path: 'returns',
-        loadComponent: () => import('./admin/returns.component').then(m => m.ReturnsComponent)
+        path: 'stock',
+        loadComponent: () => import('./admin/reports.component').then(m => m.AdminReportsComponent)
       }
     ]
   },
