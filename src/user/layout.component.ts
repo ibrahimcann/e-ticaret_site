@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { LocalizationService } from '../shared/services/localization.service';
 import { DataService } from '../shared/services/data.service';
 import { Cart } from '../shared/models/order.model';
 import { filter } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-user-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   template: `
     <div class="user-layout">
       <div class="header-container">
@@ -23,8 +24,8 @@ import { filter } from 'rxjs/operators';
         </div>
         <div class="search-icons-container" *ngIf="isHomePage">
           <div class="search-box">
-            <input type="text" placeholder="Ne aramak istersin?" class="search-input">
-            <button class="search-button">
+            <input type="text" #searchInput [(ngModel)]="searchTerm" placeholder="Ne aramak istersin?" class="search-input">
+            <button class="search-button" (click)="onSearch()">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -40,11 +41,11 @@ import { filter } from 'rxjs/operators';
         <div class="menu-content" *ngIf="menuOpen">
           <div class="menu-header">
             <button class="close-btn" (click)="toggleMenu()">✕</button>
-            <span class="menu-logo">MY APP</span>
+            <span class="menu-logo" (click)="goToHome()" style="cursor:pointer;">MY APP</span>
           </div>
           <div class="menu-search">
-            <input type="text" placeholder="Ne aramak istersin?" class="menu-search-input">
-            <button class="menu-search-btn">
+            <input type="text" #searchInput [(ngModel)]="searchTerm" placeholder="Ne aramak istersin?" class="menu-search-input">
+            <button class="menu-search-btn" (click)="onSearch()">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
           </div>
@@ -302,6 +303,8 @@ export class UserLayoutComponent implements OnInit {
   cartItemCount = 0;
   menuOpen = false;
   isHomePage = false;
+  searchTerm = '';
+  @ViewChild('searchInput') searchInputRef!: ElementRef<HTMLInputElement>;
 
   constructor(
     public localizationService: LocalizationService,
@@ -339,5 +342,22 @@ export class UserLayoutComponent implements OnInit {
 
   goToCart() {
     this.router.navigate(['/cart']);
+  }
+
+  onSearch() {
+    this.menuOpen = false;
+    this.router.navigate(['/search'], { queryParams: { q: this.searchTerm } });
+  }
+
+  focusSearchInput() {
+    this.menuOpen = false;
+    setTimeout(() => {
+      this.searchInputRef?.nativeElement.focus();
+    }, 300);
+  }
+
+  goToHome() {
+    this.menuOpen = false;
+    this.router.navigate(['/']);
   }
 }

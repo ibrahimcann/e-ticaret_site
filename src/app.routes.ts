@@ -45,6 +45,10 @@ export const routes: Routes = [
       {
         path: 'favorites',
         loadComponent: () => import('./user/favorites.component').then(m => m.FavoritesComponent)
+      },
+      {
+        path: 'search',
+        loadComponent: () => import('./user/search.component').then(m => m.SearchComponent)
       }
     ]
   },
