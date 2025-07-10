@@ -33,6 +33,9 @@ import { LanguageSelectorComponent } from '../shared/components/language-selecto
           <a routerLink="/admin/orders" routerLinkActive="active" class="admin-nav-item">
             🛒 {{ localizationService.t('admin.orders') }}
           </a>
+          <a routerLink="/admin/reports" routerLinkActive="active" class="admin-nav-item">
+            📦 Stok Durumu
+          </a>
           <a routerLink="/admin/blog" routerLinkActive="active" class="admin-nav-item">
             📝 {{ localizationService.t('admin.blog') }}
           </a>
