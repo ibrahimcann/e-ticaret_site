@@ -1,0 +1,1 @@
+  { path: 'favorites', loadComponent: () => import('../user/favorites.component').then(m => m.FavoritesComponent) }, 
