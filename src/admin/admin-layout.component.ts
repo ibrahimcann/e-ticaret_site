@@ -63,18 +63,37 @@ import { LanguageSelectorComponent } from '../shared/components/language-selecto
     </div>
   `,
   styles: [`
+    .admin-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .admin-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 260px;
+      background: #232c3d;
+      overflow-y: auto;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-content {
+      margin-left: 260px;
+      flex: 1;
+      padding: 2rem;
+    }
     .admin-logo {
       padding: 1rem 0;
       border-bottom: 1px solid #374151;
       margin-bottom: 1rem;
     }
-    
     .admin-logo h2 {
       color: white;
       margin: 0;
       font-size: 1.25rem;
     }
-    
     .admin-footer {
       margin-top: auto;
       padding-top: 1rem;
