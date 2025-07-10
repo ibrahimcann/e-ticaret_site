@@ -408,6 +408,11 @@ export class ProfileComponent implements OnInit {
       // Başarılı giriş
       this.isLoggedIn = true;
       
+      // Kullanıcı bilgilerini yükle
+      if (data.user) {
+        await this.loadUserData(data.user.id);
+      }
+      
     } catch (error: any) {
       this.loginError = error.message || 'Giriş yapılırken bir hata oluştu';
       console.error('Giriş hatası:', error);
