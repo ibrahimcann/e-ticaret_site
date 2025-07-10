@@ -93,6 +93,10 @@ export const routes: Routes = [
       {
         path: 'stock',
         loadComponent: () => import('./admin/reports.component').then(m => m.AdminReportsComponent)
+      },
+      {
+        path: 'campaigns',
+        loadComponent: () => import('./admin/campaigns.component').then(m => m.CampaignsComponent)
       }
     ]
   },
