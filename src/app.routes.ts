@@ -99,8 +99,8 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/notifications.component').then(m => m.NotificationsComponent)
       },
       {
-        path: 'returns',
-        loadComponent: () => import('./admin/returns.component').then(m => m.ReturnsComponent)
+        path: 'stock',
+        loadComponent: () => import('./admin/reports.component').then(m => m.AdminReportsComponent)
       }
     ]
   },
