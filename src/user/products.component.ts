@@ -76,7 +76,7 @@ import { Product, Category, Brand } from '../shared/models/product.model';
             <div class="products-grid grid grid-3">
               <div class="product-card" *ngFor="let product of filteredProducts">
                 <div class="product-card-inner" (click)="viewProductDetails(product.id)">
-                  <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+                  <img [src]="product.image_url" [alt]="product.name" class="product-image">
                   <div class="product-info">
                     <h3 class="product-title">{{ product.name }}</h3>
                     <p class="product-description">{{ product.description }}</p>
@@ -289,8 +289,8 @@ export class ProductsComponent implements OnInit {
         product.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
         product.description.toLowerCase().includes(this.searchTerm.toLowerCase());
       
-      const matchesCategory = !this.selectedCategory || product.categoryId === this.selectedCategory;
-      const matchesBrand = !this.selectedBrand || product.brandId === this.selectedBrand;
+      const matchesCategory = !this.selectedCategory || product.category_id === this.selectedCategory;
+      const matchesBrand = !this.selectedBrand || product.brand_id === this.selectedBrand;
       
       const matchesPrice = (!this.priceRange.min || product.price >= this.priceRange.min) &&
         (!this.priceRange.max || product.price <= this.priceRange.max);
@@ -310,7 +310,7 @@ export class ProductsComponent implements OnInit {
         this.filteredProducts.sort((a, b) => b.price - a.price);
         break;
       case 'newest':
-        this.filteredProducts.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        this.filteredProducts.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
         break;
       default:
         this.filteredProducts.sort((a, b) => a.name.localeCompare(b.name));

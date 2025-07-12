@@ -14,7 +14,7 @@ import { Product } from '../shared/models/product.model';
       <div class="container">
         <div class="product-layout">
           <div class="product-images">
-            <img [src]="product.imageUrl" [alt]="product.name" class="main-image">
+            <img [src]="product.image_url" [alt]="product.name" class="main-image">
           </div>
           
           <div class="product-info">
@@ -48,7 +48,7 @@ import { Product } from '../shared/models/product.model';
           <h2>Related Products</h2>
           <div class="grid grid-4">
             <div class="product-card" *ngFor="let relatedProduct of relatedProducts">
-              <img [src]="relatedProduct.imageUrl" [alt]="relatedProduct.name" class="product-image">
+              <img [src]="relatedProduct.image_url" [alt]="relatedProduct.name" class="product-image">
               <div class="product-info">
                 <h3 class="product-title">{{ relatedProduct.name }}</h3>
                 <p class="product-price">\${{ relatedProduct.price }}</p>
@@ -196,7 +196,7 @@ export class ProductDetailComponent implements OnInit {
     
     this.dataService.getProducts().subscribe(products => {
       this.relatedProducts = products
-        .filter(p => p.id !== this.product!.id && p.categoryId === this.product!.categoryId)
+        .filter(p => p.id !== this.product!.id && p.category_id === this.product!.category_id)
         .slice(0, 4);
     });
   }
