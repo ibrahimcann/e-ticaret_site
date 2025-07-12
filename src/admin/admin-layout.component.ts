@@ -12,7 +12,7 @@ import { LanguageSelectorComponent } from '../shared/components/language-selecto
     <div class="admin-layout">
       <aside class="admin-sidebar">
         <div class="admin-logo">
-          <h2>Admin Panel</h2>
+          <h2>{{ localizationService.t('admin.panel') }}</h2>
         </div>
         <nav class="admin-nav">
           <a routerLink="/admin/dashboard" routerLinkActive="active" class="admin-nav-item">
@@ -34,7 +34,7 @@ import { LanguageSelectorComponent } from '../shared/components/language-selecto
             🛒 {{ localizationService.t('admin.orders') }}
           </a>
           <a routerLink="/admin/stock" routerLinkActive="active" class="admin-nav-item">
-            📦 Stok Durumu
+            📦 {{ localizationService.t('admin.stock') }}
           </a>
           <a routerLink="/admin/blog" routerLinkActive="active" class="admin-nav-item">
             📝 {{ localizationService.t('admin.blog') }}
@@ -49,15 +49,15 @@ import { LanguageSelectorComponent } from '../shared/components/language-selecto
             🔔 {{ localizationService.t('admin.notifications') }}
           </a>
           <a routerLink="/admin/returns" routerLinkActive="active" class="admin-nav-item">
-            🔄 İade / Değişim
+            🔄 {{ localizationService.t('admin.returns') }}
           </a>
           <a routerLink="/admin/campaigns" routerLinkActive="active" class="admin-nav-item">
-            🎟️ Kampanyalar / Kuponlar
+            🎟️ {{ localizationService.t('admin.campaigns') }}
           </a>
         </nav>
         <div class="admin-footer">
           <app-language-selector></app-language-selector>
-          <a routerLink="/" class="admin-nav-item">🏠 View Site</a>
+          <a routerLink="/" class="admin-nav-item">🏠 {{ localizationService.t('site.view') }}</a>
         </div>
       </aside>
       <main class="admin-content">
