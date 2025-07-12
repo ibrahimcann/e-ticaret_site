@@ -18,4 +18,37 @@ export class SupabaseService {
   get client() {
     return this.supabase;
   }
+
+  // Ürünleri listele
+  async getProducts(): Promise<any[]> {
+    const { data, error } = await this.supabase.from('products').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
+
+  // Ürün ekle
+  async addProduct(product: any): Promise<void> {
+    const { error } = await this.supabase.from('products').insert([product]);
+    if (error) throw error;
+  }
+
+  // Ürün sil
+  async deleteProduct(id: string): Promise<void> {
+    const { error } = await this.supabase.from('products').delete().eq('id', id);
+    if (error) throw error;
+  }
+
+  // Kategorileri listele
+  async getCategories(): Promise<any[]> {
+    const { data, error } = await this.supabase.from('categories').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
+
+  // Markaları listele
+  async getBrands(): Promise<any[]> {
+    const { data, error } = await this.supabase.from('brands').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
 }
