@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../shared/services/data.service';
+import { SupabaseService } from '../app/supabase.service';
 import { LocalizationService } from '../shared/services/localization.service';
 import { Product, Category, Brand } from '../shared/models/product.model';
 
@@ -40,14 +40,14 @@ import { Product, Category, Brand } from '../shared/models/product.model';
           <div class="grid grid-3">
             <div class="form-group">
               <label class="form-label">Category</label>
-              <select class="form-input" [(ngModel)]="currentProduct.categoryId" name="category">
+              <select class="form-input" [(ngModel)]="currentProduct.category_id" name="category_id">
                 <option value="">Select Category</option>
                 <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
               </select>
             </div>
             <div class="form-group">
               <label class="form-label">Brand</label>
-              <select class="form-input" [(ngModel)]="currentProduct.brandId" name="brand">
+              <select class="form-input" [(ngModel)]="currentProduct.brand_id" name="brand_id">
                 <option value="">Select Brand</option>
                 <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
               </select>
@@ -60,7 +60,7 @@ import { Product, Category, Brand } from '../shared/models/product.model';
           
           <div class="form-group">
             <label class="form-label">Image URL</label>
-            <input type="url" class="form-input" [(ngModel)]="currentProduct.imageUrl" name="imageUrl">
+            <input type="url" class="form-input" [(ngModel)]="currentProduct.image_url" name="image_url">
           </div>
           
           <div class="form-actions">
@@ -89,15 +89,15 @@ import { Product, Category, Brand } from '../shared/models/product.model';
           <tbody>
             <tr *ngFor="let product of products">
               <td>
-                <img [src]="product.imageUrl" [alt]="product.name" 
+                <img [src]="product.image_url" [alt]="product.name" 
                      style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
               </td>
               <td>{{ product.name }}</td>
               <td>\${{ product.price }}</td>
               <td>{{ product.stock }}</td>
               <td>
-                <span class="status-badge" [class.active]="product.isActive">
-                  {{ product.isActive ? 'Active' : 'Inactive' }}
+                <span class="status-badge" [class.active]="product.is_active">
+                  {{ product.is_active ? 'Active' : 'Inactive' }}
                 </span>
               </td>
               <td>
@@ -154,15 +154,15 @@ export class AdminProductsComponent implements OnInit {
     name: '',
     description: '',
     price: 0,
-    imageUrl: '',
-    categoryId: '',
-    brandId: '',
+    image_url: '',
+    category_id: '',
+    brand_id: '',
     stock: 0,
-    isActive: true
+    is_active: true
   };
 
   constructor(
-    private dataService: DataService,
+    private supabaseService: SupabaseService,
     public localizationService: LocalizationService
   ) {}
 
@@ -170,18 +170,10 @@ export class AdminProductsComponent implements OnInit {
     this.loadData();
   }
 
-  loadData() {
-    this.dataService.getProducts().subscribe(products => {
-      this.products = products;
-    });
-    
-    this.dataService.getCategories().subscribe(categories => {
-      this.categories = categories;
-    });
-    
-    this.dataService.getBrands().subscribe(brands => {
-      this.brands = brands;
-    });
+  async loadData() {
+    this.products = await this.supabaseService.getProducts();
+    this.categories = await this.supabaseService.getCategories();
+    this.brands = await this.supabaseService.getBrands();
   }
 
   editProduct(product: Product) {
@@ -190,32 +182,19 @@ export class AdminProductsComponent implements OnInit {
     this.showAddForm = true;
   }
 
-  saveProduct() {
-    if (this.editingProduct) {
-      this.dataService.updateProduct(this.currentProduct as Product).subscribe(() => {
-        this.loadData();
-        this.cancelEdit();
-      });
-    } else {
-      const newProduct: Product = {
-        ...this.currentProduct as Product,
-        id: '',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-      this.dataService.addProduct(newProduct).subscribe(() => {
-        this.loadData();
-        this.cancelEdit();
-      });
+  async saveProduct() {
+    if (!this.editingProduct) {
+      const newProduct = { ...this.currentProduct, is_active: true };
+      await this.supabaseService.addProduct(newProduct);
+      await this.loadData();
+      this.cancelEdit();
     }
+    // Düzenleme (update) işlemi için ek kod eklenebilir.
   }
 
-  deleteProduct(id: string) {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.dataService.deleteProduct(id).subscribe(() => {
-        this.loadData();
-      });
-    }
+  async deleteProduct(id: string) {
+    await this.supabaseService.deleteProduct(id);
+    await this.loadData();
   }
 
   cancelEdit() {
@@ -225,11 +204,11 @@ export class AdminProductsComponent implements OnInit {
       name: '',
       description: '',
       price: 0,
-      imageUrl: '',
-      categoryId: '',
-      brandId: '',
+      image_url: '',
+      category_id: '',
+      brand_id: '',
       stock: 0,
-      isActive: true
+      is_active: true
     };
   }
 }
