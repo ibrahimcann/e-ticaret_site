@@ -68,7 +68,7 @@ export type DonutChartOptions = {
           <div class="stat-icon">📝</div>
           <div class="stat-info">
             <h3>{{ stats.blogPosts }}</h3>
-            <p>Blog Posts</p>
+            <p>{{ localizationService.t('dashboard.blogPosts') }}</p>
           </div>
         </div>
       </div>
@@ -96,21 +96,21 @@ export type DonutChartOptions = {
       </div>
       <div class="recent-section">
         <div class="card">
-          <h2>Recent Activity</h2>
+          <h2>{{ localizationService.t('dashboard.recentActivity') }}</h2>
           <div class="activity-list">
             <div class="activity-item">
               <span class="activity-icon">📦</span>
-              <span>New product added: "Wireless Headphones"</span>
+              <span>{{ localizationService.t('dashboard.newProduct') }}: "Wireless Headphones"</span>
               <span class="activity-time">2 hours ago</span>
             </div>
             <div class="activity-item">
               <span class="activity-icon">🛒</span>
-              <span>Order #1234 completed</span>
+              <span>{{ localizationService.t('dashboard.orderCompleted') }}</span>
               <span class="activity-time">4 hours ago</span>
             </div>
             <div class="activity-item">
               <span class="activity-icon">👥</span>
-              <span>New user registered</span>
+              <span>{{ localizationService.t('dashboard.newUser') }}</span>
               <span class="activity-time">6 hours ago</span>
             </div>
           </div>
@@ -266,16 +266,21 @@ export class AdminDashboardComponent implements OnInit {
 
     // SABİT (MOCK) VERİ İLE GRAFİKLERİ DOLDUR
     this.barChartOptions = {
-      series: [{ name: 'Siparişler', data: [2, 1, 3, 0, 4, 2, 1, 5, 3, 2] }],
+      series: [{ name: this.localizationService.t('admin.orders'), data: [2, 1, 3, 0, 4, 2, 1, 5, 3, 2] }],
       chart: { type: 'bar', height: 400 },
       xaxis: { categories: ['2025-06-29','2025-06-30','2025-07-01','2025-07-02','2025-07-03','2025-07-04','2025-07-05','2025-07-06','2025-07-07','2025-07-08'] },
-      title: { text: 'Son 10 Gün Sipariş Grafiği' },
+      title: { text: this.localizationService.t('dashboard.last10DaysOrders') },
       dataLabels: { enabled: false }
     };
     this.donutChartOptions = {
       series: [5, 3, 2, 4],
       chart: { type: 'donut', height: 400 },
-      labels: ['Tek Çekim', 'Taksitli Kredi Kartı', 'Kapıda Ödeme', 'Havale/EFT'],
+      labels: [
+        this.localizationService.t('payment.single'),
+        this.localizationService.t('payment.installment'),
+        this.localizationService.t('payment.cod'),
+        this.localizationService.t('payment.transfer')
+      ],
       legend: { position: 'top' },
       responsive: [
         {
@@ -286,7 +291,7 @@ export class AdminDashboardComponent implements OnInit {
           }
         }
       ],
-      title: { text: 'Ödeme Tipine Göre Siparişler' }
+      title: { text: this.localizationService.t('dashboard.ordersByPaymentType') }
     };
   }
 }
