@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DataService } from '../shared/services/data.service';
+import { SupabaseService } from '../app/supabase.service';
 import { LocalizationService } from '../shared/services/localization.service';
 import { Brand } from '../shared/models/product.model';
 
@@ -128,7 +128,7 @@ export class AdminBrandsComponent implements OnInit {
   };
 
   constructor(
-    private dataService: DataService,
+    private supabaseService: SupabaseService,
     public localizationService: LocalizationService
   ) {}
 
@@ -136,10 +136,8 @@ export class AdminBrandsComponent implements OnInit {
     this.loadBrands();
   }
 
-  loadBrands() {
-    this.dataService.getBrands().subscribe(brands => {
-      this.brands = brands;
-    });
+  async loadBrands() {
+    this.brands = await this.supabaseService.getBrands();
   }
 
   editBrand(brand: Brand) {
@@ -148,17 +146,28 @@ export class AdminBrandsComponent implements OnInit {
     this.showAddForm = true;
   }
 
-  saveBrand() {
-    const newBrand: Brand = {
-      ...this.currentBrand as Brand,
-      id: this.editingBrand?.id || Date.now().toString(),
-      createdAt: this.editingBrand?.createdAt || new Date()
-    };
-    
-    this.dataService.addBrand(newBrand).subscribe(() => {
-      this.loadBrands();
+  async saveBrand() {
+    try {
+      const newBrand: Brand = {
+        ...this.currentBrand as Brand,
+        id: this.editingBrand?.id || Date.now().toString(),
+        createdAt: this.editingBrand?.createdAt || new Date()
+      };
+      // Alanları Supabase'e uygun şekilde dönüştür
+      const supabaseBrand = {
+        id: newBrand.id,
+        name: newBrand.name,
+        description: newBrand.description,
+        logo_url: newBrand.logoUrl,
+        is_active: newBrand.isActive,
+        created_at: newBrand.createdAt
+      };
+      await this.supabaseService.addBrand(supabaseBrand);
+      await this.loadBrands();
       this.cancelEdit();
-    });
+    } catch (error: any) {
+      alert('Marka eklenirken bir hata oluştu: ' + (error?.message || error));
+    }
   }
 
   deleteBrand(id: string) {

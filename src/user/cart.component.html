@@ -24,6 +24,7 @@
       <span>{{total | currency:'TRY'}}</span>
     </div>
     <button class="checkout-btn">SİPARİŞİ İŞLEME KOY</button>
+    <app-modal [show]="showModal" [title]="'Sipariş Detayları'" [message]="'Siparişiniz başarıyla alındı.'" (onClose)="showModal = false"></app-modal>
     <div class="info">Ürünler rezerve edilmedi. Tükenme riskini alma!</div>
     <div class="promo">Kampanya kodun var mı?</div>
     <div class="gift">Bir sonraki ekranda hediye seçeneklerini seç</div>
