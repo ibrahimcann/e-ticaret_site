@@ -52,6 +52,24 @@ export class SupabaseService {
     if (error) throw error;
   }
 
+  // Ürün güncelle
+  async updateProduct(product: any): Promise<void> {
+    if (!product.id) throw new Error('Ürün güncellemek için id gereklidir!');
+    const { error } = await this.supabase.from('products')
+      .update({
+        name: product.name,
+        description: product.description,
+        price: Number(product.price),
+        imageurl: product.imageurl,
+        category: product.category,
+        brand: product.brand,
+        stock: Number(product.stock),
+        isactive: Boolean(product.isactive)
+      })
+      .eq('id', product.id);
+    if (error) throw error;
+  }
+
   // Kategorileri listele
   async getCategories(): Promise<any[]> {
     const { data, error } = await this.supabase.from('categories').select('*').order('created_at', { ascending: false });
