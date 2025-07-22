@@ -76,52 +76,52 @@ export class DataService {
         name: 'Wireless Headphones',
         description: 'Premium wireless headphones with noise cancellation',
         price: 199.99,
-        image_url: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-        category_id: '1',
-        brand_id: '1',
+        imageurl: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+        category: '1',
+        brand: '1',
         stock: 50,
-        is_active: true,
+        isactive: true,
         created_at: new Date(),
-        updated_at: new Date()
+        updateat: new Date()
       },
       {
         id: '2',
         name: 'Smart Watch',
         description: 'Advanced smartwatch with health monitoring',
         price: 299.99,
-        image_url: 'https://images.pexels.com/photos/1783873/pexels-photo-1783873.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-        category_id: '1',
-        brand_id: '1',
+        imageurl: 'https://images.pexels.com/photos/1783873/pexels-photo-1783873.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+        category: '1',
+        brand: '1',
         stock: 30,
-        is_active: true,
+        isactive: true,
         created_at: new Date(),
-        updated_at: new Date()
+        updateat: new Date()
       },
       {
         id: '3',
         name: 'Designer T-Shirt',
         description: 'Premium cotton t-shirt with modern design',
         price: 49.99,
-        image_url: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-        category_id: '2',
-        brand_id: '2',
+        imageurl: 'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+        category: '2',
+        brand: '2',
         stock: 100,
-        is_active: true,
+        isactive: true,
         created_at: new Date(),
-        updated_at: new Date()
+        updateat: new Date()
       },
       {
         id: '4',
         name: 'Laptop Computer',
         description: 'High-performance laptop for professionals',
         price: 1299.99,
-        image_url: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
-        category_id: '1',
-        brand_id: '1',
+        imageurl: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400&h=300&fit=crop',
+        category: '1',
+        brand: '1',
         stock: 15,
-        is_active: true,
+        isactive: true,
         created_at: new Date(),
-        updated_at: new Date()
+        updateat: new Date()
       }
     ];
 

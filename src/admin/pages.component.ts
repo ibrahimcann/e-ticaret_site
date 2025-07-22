@@ -121,7 +121,7 @@ import { LocalizationService } from '../shared/services/localization.service';
     }
   `]
 })
-export class AdminPagesComponent {
+export class PagesComponent {
   samplePages = [
     {
       id: '1',

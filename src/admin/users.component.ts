@@ -88,7 +88,7 @@ import { LocalizationService } from '../shared/services/localization.service';
     }
   `]
 })
-export class AdminUsersComponent {
+export class UsersComponent {
   sampleUsers = [
     {
       id: '1',
