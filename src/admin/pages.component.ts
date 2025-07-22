@@ -185,6 +185,15 @@ export class PagesComponent {
         this.samplePages[index] = { ...this.currentPage };
       }
     } else {
+      const supabaseBrand = {
+        name: this.currentPage.title,
+        slug: this.currentPage.slug,
+        content: this.currentPage.content,
+        meta_title: this.currentPage.metaTitle,
+        meta_description: this.currentPage.metaDescription,
+        is_active: this.currentPage.isActive,
+        created_at: new Date()
+      };
       this.samplePages.push({
         ...this.currentPage,
         id: Date.now().toString(),

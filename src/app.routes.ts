@@ -109,6 +109,10 @@ export const routes: Routes = [
       {
         path: 'campaigns',
         loadComponent: () => import('./admin/campaigns.component').then(m => m.CampaignsComponent)
+      },
+      {
+        path: 'returns',
+        loadComponent: () => import('./admin/returns.component').then(m => m.ReturnsComponent)
       }
     ]
   },
