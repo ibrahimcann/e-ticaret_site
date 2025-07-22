@@ -147,7 +147,7 @@ import { BlogPost, PostStatus } from '../shared/models/blog.model';
     }
   `]
 })
-export class AdminBlogComponent implements OnInit {
+export class BlogComponent implements OnInit {
   blogPosts: BlogPost[] = [];
   showAddForm = false;
   editingPost: BlogPost | null = null;

@@ -3,13 +3,13 @@ export interface Product {
   name: string;
   description: string;
   price: number;
-  image_url: string;
-  category_id: string;
-  brand_id: string;
+  imageurl: string;
+  category: string;
+  brand: string;
   stock: number;
-  is_active: boolean;
+  isactive: boolean;
   created_at: Date;
-  updated_at: Date;
+  updateat: Date;
 }
 
 export interface Category {

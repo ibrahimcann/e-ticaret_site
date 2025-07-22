@@ -28,8 +28,22 @@ export class SupabaseService {
 
   // Ürün ekle
   async addProduct(product: any): Promise<void> {
-    const { error } = await this.supabase.from('products').insert([product]);
-    if (error) throw error;
+    console.log('Sending product to Supabase:', product);
+    
+    // created_at alanını ekle
+    const productWithTimestamp = {
+      ...product,
+      created_at: new Date().toISOString()
+    };
+    
+    const { data, error } = await this.supabase.from('products').insert([productWithTimestamp]).select();
+    
+    if (error) {
+      console.error('Supabase error details:', error);
+      throw error;
+    }
+    
+    console.log('Product added successfully, response:', data);
   }
 
   // Ürün sil

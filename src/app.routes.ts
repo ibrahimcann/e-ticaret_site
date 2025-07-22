@@ -64,39 +64,39 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        loadComponent: () => import('./admin/dashboard.component').then(m => m.AdminDashboardComponent)
+        loadComponent: () => import('./admin/dashboard.component').then(m => m.DashboardComponent)
       },
       {
         path: 'products',
-        loadComponent: () => import('./admin/products.component').then(m => m.AdminProductsComponent)
+        loadComponent: () => import('./admin/products.component').then(m => m.ProductsComponent)
       },
       {
         path: 'categories',
-        loadComponent: () => import('./admin/categories.component').then(m => m.AdminCategoriesComponent)
+        loadComponent: () => import('./admin/categories.component').then(m => m.CategoriesComponent)
       },
       {
         path: 'brands',
-        loadComponent: () => import('./admin/brands.component').then(m => m.AdminBrandsComponent)
+        loadComponent: () => import('./admin/brands.component').then(m => m.BrandsComponent)
       },
       {
         path: 'users',
-        loadComponent: () => import('./admin/users.component').then(m => m.AdminUsersComponent)
+        loadComponent: () => import('./admin/users.component').then(m => m.UsersComponent)
       },
       {
         path: 'orders',
-        loadComponent: () => import('./admin/orders.component').then(m => m.AdminOrdersComponent)
+        loadComponent: () => import('./admin/orders.component').then(m => m.OrdersComponent)
       },
       {
         path: 'blog',
-        loadComponent: () => import('./admin/blog.component').then(m => m.AdminBlogComponent)
+        loadComponent: () => import('./admin/blog.component').then(m => m.BlogComponent)
       },
       {
         path: 'pages',
-        loadComponent: () => import('./admin/pages.component').then(m => m.AdminPagesComponent)
+        loadComponent: () => import('./admin/pages.component').then(m => m.PagesComponent)
       },
       {
         path: 'favorites',
-        loadComponent: () => import('./user/favorites.component').then(m => m.FavoritesComponent)
+        loadComponent: () => import('./admin/favorites.component').then(m => m.FavoritesComponent)
       },
       {
         path: 'notifications',
@@ -104,7 +104,7 @@ export const routes: Routes = [
       },
       {
         path: 'stock',
-        loadComponent: () => import('./admin/reports.component').then(m => m.AdminReportsComponent)
+        loadComponent: () => import('./admin/reports.component').then(m => m.ReportsComponent)
       },
       {
         path: 'campaigns',

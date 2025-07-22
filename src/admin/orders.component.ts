@@ -98,7 +98,7 @@ import { LocalizationService } from '../shared/services/localization.service';
     }
   `]
 })
-export class AdminOrdersComponent {
+export class OrdersComponent {
   sampleOrders = [
     {
       id: '1001',

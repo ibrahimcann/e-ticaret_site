@@ -216,7 +216,7 @@ export type DonutChartOptions = {
     }
   `]
 })
-export class AdminDashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   stats = {
     products: 0,
     users: 0,

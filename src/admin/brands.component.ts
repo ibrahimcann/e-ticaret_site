@@ -115,7 +115,7 @@ import { Brand } from '../shared/models/product.model';
     }
   `]
 })
-export class AdminBrandsComponent implements OnInit {
+export class BrandsComponent implements OnInit {
   brands: Brand[] = [];
   showAddForm = false;
   editingBrand: Brand | null = null;

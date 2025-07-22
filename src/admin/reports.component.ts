@@ -53,7 +53,7 @@ import { Product } from '../shared/models/product.model';
     }
   `]
 })
-export class AdminReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit {
   lowStockProducts: Product[] = [];
 
   constructor(private dataService: DataService) {}

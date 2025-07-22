@@ -106,7 +106,7 @@ import { Category } from '../shared/models/product.model';
     }
   `]
 })
-export class AdminCategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit {
   categories: Category[] = [];
   showAddForm = false;
   editingCategory: Category | null = null;
