@@ -65,4 +65,10 @@ export class SupabaseService {
     if (error) throw error;
     return data || [];
   }
+
+  // Markaları ekle
+  async addBrand(brand: any): Promise<void> {
+    const { error } = await this.supabase.from('brands').insert([brand]);
+    if (error) throw error;
+  }
 }

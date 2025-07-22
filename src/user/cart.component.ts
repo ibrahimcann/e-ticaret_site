@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { DataService } from '../shared/services/data.service';
 import { Cart, CartItem } from '../shared/models/order.model';
+import { ModalComponent } from './modal.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ModalComponent],
   template: `
     <div class="cart-container">
       <div class="cart-items">
@@ -283,6 +284,7 @@ import { Cart, CartItem } from '../shared/models/order.model';
 })
 export class CartComponent implements OnInit {
   cart: Cart | null = null;
+  showModal = false;
 
   constructor(
     private dataService: DataService,
@@ -317,6 +319,6 @@ export class CartComponent implements OnInit {
   }
 
   goToCheckout() {
-    this.router.navigate(['/checkout']);
+    this.showModal = true;
   }
 }
