@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -28,7 +29,7 @@ import { CommonModule } from '@angular/common';
           <!-- STEP 1: Teslimat Seçimi -->
           <form *ngSwitchCase="1" class="delivery-step">
             <div class="delivery-left">
-              <button type="button" class="back-btn" *ngIf="false">←</button>
+              <button type="button" class="back-btn" (click)="goBack()">← Sepete Geri Dön</button>
               <h1 class="delivery-title">SİPARİŞİNİZİ NEREDE TESLİM ALMAK İSTERSİNİZ?</h1>
               <input name="address" placeholder="Adres veya posta kodu gir" class="delivery-input" required />
               <div class="delivery-options">
@@ -63,6 +64,7 @@ import { CommonModule } from '@angular/common';
           <!-- STEP 2: Ödeme -->
           <form *ngSwitchCase="2" class="payment-step-wide">
             <div class="payment-methods">
+              <button type="button" class="back-btn" (click)="step = 1">← Teslimata Geri Dön</button>
               <h1 class="payment-methods-title">ÖDEME YÖNTEMİNİZİ SEÇİN</h1>
               <div class="method-list">
                 <div class="method" [class.selected]="selectedMethod === 'card'" (click)="selectedMethod = 'card'">
@@ -124,6 +126,7 @@ import { CommonModule } from '@angular/common';
           <!-- STEP 3: Sipariş Özeti ve Onay -->
           <div *ngSwitchCase="3" class="summary-step-wide">
             <div class="summary-left">
+              <button type="button" class="back-btn" (click)="step = 2">← Ödemeye Geri Dön</button>
               <h1 class="summary-title">ALIŞVERİŞİ ONAYLAYIN VE SONLANDIRIN</h1>
               <div class="summary-section clickable" (click)="step = 1">
                 <div class="section-label"><span class="section-icon">📍</span> TESLİMAT</div>
@@ -787,6 +790,23 @@ import { CommonModule } from '@angular/common';
     .summary-section.clickable:hover {
       background: #f0f4ff;
     }
+    .back-btn {
+      background: transparent;
+      border: none;
+      color: #2563eb;
+      font-size: 1.1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+      margin-bottom: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .back-btn:hover {
+      background: #e0e7ff;
+    }
     @media (max-width: 1100px) {
       .checkout-wide-content, .checkout-steps-bar.wide, .checkout-bottom-bar {
         max-width: 100vw;
@@ -842,4 +862,11 @@ import { CommonModule } from '@angular/common';
 export class CheckoutComponent {
   step = 1;
   selectedMethod: 'card' | 'troy' | 'gift' | 'in' = 'card';
+  
+  constructor(private router: Router) {}
+  
+  goBack() {
+    // Sepet sayfasına geri dön
+    this.router.navigate(['/cart']);
+  }
 } 
