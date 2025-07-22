@@ -246,8 +246,43 @@ export class ProductsComponent implements OnInit {
         console.error('Error saving product:', error);
         this.debugMessage = `Ürün kaydedilirken hata oluştu: ${this.getErrorMessage(error)}`;
       }
+    } else {
+      // GÜNCELLEME MODU
+      if (!this.currentProduct.name || !this.currentProduct.price) {
+        this.debugMessage = 'Ürün adı ve fiyatı zorunludur!';
+        return;
+      }
+      const productForDb = {
+        id: this.editingProduct.id,
+        name: this.currentProduct.name,
+        description: this.currentProduct.description || '',
+        price: Number(this.currentProduct.price),
+        imageurl: this.currentProduct.imageurl || '',
+        category: this.currentProduct.category || null,
+        brand: this.currentProduct.brand || null,
+        stock: Number(this.currentProduct.stock || 0),
+        isactive: Boolean(this.currentProduct.isactive)
+      };
+      try {
+        await this.supabaseService.updateProduct(productForDb);
+        this.debugMessage = 'Ürün başarıyla güncellendi!';
+        await this.loadData();
+        this.showAddForm = false;
+        this.editingProduct = null;
+        this.currentProduct = {
+          name: '',
+          description: '',
+          price: 0,
+          imageurl: '',
+          category: '',
+          brand: '',
+          stock: 0,
+          isactive: true
+        };
+      } catch (error) {
+        this.debugMessage = `Ürün güncellenirken hata oluştu: ${this.getErrorMessage(error)}`;
+      }
     }
-    // Düzenleme (update) işlemi için ek kod eklenebilir.
   }
 
   // Hata mesajını güvenli bir şekilde çıkarmak için yardımcı fonksiyon
