@@ -50,15 +50,15 @@ import { FormsModule } from '@angular/forms';
             </button>
           </div>
           <nav class="menu-nav">
-            <a class="menu-link red">İNDİRİM</a>
-            <a class="menu-link">YENİ</a>
-            <a class="menu-link">KETEN KARIŞIMLI</a>
-            <a class="menu-link">GİYİM</a>
-            <a class="menu-link">STR TEEN <span class="new-badge">NEW</span></a>
-            <a class="menu-link">CASUAL SPOR</a>
-            <a class="menu-link">AYAKKABI</a>
-            <a class="menu-link">AKSESUAR</a>
-            <a class="menu-link">ÇANTA</a>
+            <a class="menu-link red" (click)="goToCategoryPage('indirim')">İNDİRİM</a>
+            <a class="menu-link" (click)="goToCategoryPage('yeni')">YENİ</a>
+            <a class="menu-link" (click)="goToCategoryPage('keten-karisimli')">KETEN KARIŞIMLI</a>
+            <a class="menu-link" (click)="goToCategoryPage('giyim')">GİYİM</a>
+            <a class="menu-link" (click)="goToCategoryPage('str-teen')">STR TEEN <span class="new-badge">NEW</span></a>
+            <a class="menu-link" (click)="goToCategoryPage('casual-spor')">CASUAL SPOR</a>
+            <a class="menu-link" (click)="goToCategoryPage('ayakkabi')">AYAKKABI</a>
+            <a class="menu-link" (click)="goToCategoryPage('aksesuar')">AKSESUAR</a>
+            <a class="menu-link" (click)="goToCategoryPage('canta')">ÇANTA</a>
           </nav>
         </div>
       </div>
@@ -359,5 +359,15 @@ export class UserLayoutComponent implements OnInit {
   goToHome() {
     this.menuOpen = false;
     this.router.navigate(['/']);
+  }
+
+  goToCategory(category: string) {
+    this.menuOpen = false;
+    this.router.navigate(['/products'], { queryParams: { category } });
+  }
+
+  goToCategoryPage(path: string) {
+    this.menuOpen = false;
+    this.router.navigate(['/' + path]);
   }
 }

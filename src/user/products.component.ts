@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -228,6 +228,7 @@ import { Product, Category, Brand } from '../shared/models/product.model';
   `]
 })
 export class ProductsComponent implements OnInit {
+  @Input() defaultCategory: string = '';
   products: Product[] = [];
   filteredProducts: Product[] = [];
   categories: Category[] = [];
@@ -249,15 +250,24 @@ export class ProductsComponent implements OnInit {
   ngOnInit() {
     this.loadData();
     
-    // Check for query parameters
+    // Query parametre ile kategori seçimi
     this.route.queryParams.subscribe(params => {
       if (params['category']) {
-        // Find the category ID based on the category name from the URL
         this.dataService.getCategories().subscribe(categories => {
           const category = categories.find(c => 
             c.name.toLowerCase() === params['category'].toLowerCase()
           );
-          
+          if (category) {
+            this.selectedCategory = category.id;
+            this.filterProducts();
+          }
+        });
+      } else if (this.defaultCategory) {
+        // Input ile kategori seçimi
+        this.dataService.getCategories().subscribe(categories => {
+          const category = categories.find(c => 
+            c.name.toLowerCase() === this.defaultCategory.toLowerCase()
+          );
           if (category) {
             this.selectedCategory = category.id;
             this.filterProducts();
